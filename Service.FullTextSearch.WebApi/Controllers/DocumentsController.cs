@@ -21,8 +21,7 @@ public class DocumentsController : ControllerBase
     {
         var command = new IndexDocumentCommand(
             request.Title, 
-            request.Content, 
-            request.FilePath ?? string.Empty);
+            request.Content);
 
         var result = await _mediator.Send(command);
 

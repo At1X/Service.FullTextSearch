@@ -5,33 +5,49 @@ namespace Service.FullTextSearch.Infrastructure.Persistence.Repositories;
 
 public class InMemoryInvertedIndexRepository : IInvertedIndexRepository
 {
-    public Task<InvertedIndex?> GetByTermAsync(string term, CancellationToken cancellationToken = default)
+    private readonly Dictionary<string, InvertedIndex> _indices = new();
+
+    public InvertedIndex? GetByTerm(string term)
     {
-        throw new NotImplementedException();
+        _indices.TryGetValue(term.ToLowerInvariant(), out var index);
+        return index;
     }
 
-    public Task<IReadOnlyList<InvertedIndex>> GetAllAsync(CancellationToken cancellationToken = default)
+    public IReadOnlyList<InvertedIndex> GetAll()
     {
-        throw new NotImplementedException();
+        return _indices.Values.ToList();
     }
 
-    public Task<InvertedIndex> AddAsync(InvertedIndex index, CancellationToken cancellationToken = default)
+    public InvertedIndex Add(InvertedIndex index)
     {
-        throw new NotImplementedException();
+        _indices[index.Term] = index;
+        return index;
     }
 
-    public Task UpdateAsync(InvertedIndex index, CancellationToken cancellationToken = default)
+    public void Update(InvertedIndex index)
     {
-        throw new NotImplementedException();
+        _indices[index.Term] = index;
     }
 
-    public Task DeleteAsync(string term, CancellationToken cancellationToken = default)
+    public void Delete(string term)
     {
-        throw new NotImplementedException();
+        _indices.Remove(term.ToLowerInvariant());
     }
 
-    public Task<IReadOnlyList<InvertedIndex>> SearchTermsAsync(IEnumerable<string> terms, CancellationToken cancellationToken = default)
+    public IReadOnlyList<InvertedIndex> SearchTerms(
+        IEnumerable<string> terms)
     {
-        throw new NotImplementedException();
+        var results = terms
+            .Select(term => _indices.TryGetValue(term.ToLowerInvariant(), out var index) ? index : null)
+            .Where(i => i != null)
+            .Cast<InvertedIndex>()
+            .ToList();
+
+        return results;
+    }
+
+    public Dictionary<string, InvertedIndex> GetAllIndices()
+    {
+        return _indices.ToDictionary(i => i.Key, i => i.Value);
     }
 }

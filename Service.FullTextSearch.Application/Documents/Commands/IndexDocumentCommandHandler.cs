@@ -31,10 +31,9 @@ public class IndexDocumentCommandHandler : IRequestHandler<IndexDocumentCommand,
         {
             var document = new Document(
                 request.Title, 
-                request.Content, 
-                request.FilePath);
+                request.Content);
 
-            await _documentRepository.AddAsync(document, cancellationToken);
+            _documentRepository.Add(document);
 
             var tokens = _tokenizer.Tokenize(request.Content);
             var cleanTokens = _stopWordRemover.RemoveStopWords(tokens);
@@ -45,20 +44,21 @@ public class IndexDocumentCommandHandler : IRequestHandler<IndexDocumentCommand,
 
             foreach (var (term, frequency) in termFrequency)
             {
-                var index = await _indexRepository.GetByTermAsync(term, cancellationToken);
+                var index = _indexRepository.GetByTerm(term);
                 
                 if (index == null)
                 {
-                    index = new Domain.Entities.InvertedIndex(term);
+                    index = new InvertedIndex(term);
                     index.AddOrUpdateDocument(document.Id, frequency);
-                    await _indexRepository.AddAsync(index, cancellationToken);
+                    _indexRepository.Add(index);
                 }
                 else
                 {
                     index.AddOrUpdateDocument(document.Id, frequency);
-                    await _indexRepository.UpdateAsync(index, cancellationToken);
+                    _indexRepository.Update(index);
                 }
             }
+            
 
             return Result<Guid>.Success(document.Id);
         }

@@ -16,7 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Documents\Queries\" />
       <Folder Include="Services\" />
     </ItemGroup>
 

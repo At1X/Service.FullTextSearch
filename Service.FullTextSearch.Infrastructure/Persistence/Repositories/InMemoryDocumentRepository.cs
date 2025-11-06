@@ -5,28 +5,32 @@ namespace Service.FullTextSearch.Infrastructure.Persistence.Repositories;
 
 public class InMemoryDocumentRepository : IDocumentRepository
 {
-    public Task<Document?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    private readonly Dictionary<Guid, Document> _documents = new();
+
+    public Document? GetById(Guid id)
     {
-        throw new NotImplementedException();
+        _documents.TryGetValue(id, out var document);
+        return document;
     }
 
-    public Task<IReadOnlyList<Document>> GetAllAsync(CancellationToken cancellationToken = default)
+    public IReadOnlyList<Document> GetAll()
     {
-        throw new NotImplementedException();
+        return _documents.Values.ToList();
     }
 
-    public Task<Document> AddAsync(Document document, CancellationToken cancellationToken = default)
+    public Document Add(Document document)
     {
-        throw new NotImplementedException();
+        _documents[document.Id] = document;
+        return document;
     }
 
-    public Task UpdateAsync(Document document, CancellationToken cancellationToken = default)
+    public void Update(Document document)
     {
-        throw new NotImplementedException();
+        _documents[document.Id] = document;
     }
 
-    public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public void Delete(Guid id)
     {
-        throw new NotImplementedException();
+        _documents.Remove(id);
     }
 }

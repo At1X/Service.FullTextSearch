@@ -4,10 +4,11 @@ namespace Service.FullTextSearch.Domain.Interfaces;
 
 public interface IInvertedIndexRepository
 {
-    Task<InvertedIndex?> GetByTermAsync(string term, CancellationToken cancellationToken = default);
-    Task<IReadOnlyList<InvertedIndex>> GetAllAsync(CancellationToken cancellationToken = default);
-    Task<InvertedIndex> AddAsync(InvertedIndex index, CancellationToken cancellationToken = default);
-    Task UpdateAsync(InvertedIndex index, CancellationToken cancellationToken = default);
-    Task DeleteAsync(string term, CancellationToken cancellationToken = default);
-    Task<IReadOnlyList<InvertedIndex>> SearchTermsAsync(IEnumerable<string> terms, CancellationToken cancellationToken = default);
+    InvertedIndex? GetByTerm(string term);
+    IReadOnlyList<InvertedIndex> GetAll();
+    InvertedIndex Add(InvertedIndex index);
+    void Update(InvertedIndex index);
+    void Delete(string term);
+    IReadOnlyList<InvertedIndex> SearchTerms(IEnumerable<string> terms);
+    Dictionary<string, InvertedIndex> GetAllIndices();
 }

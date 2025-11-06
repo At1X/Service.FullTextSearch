@@ -10,7 +10,7 @@ public class Document : BaseEntity
 
     private Document() { } // For ORM
 
-    public Document(string title, string content, string filePath)
+    public Document(string title, string content)
     {
         if (string.IsNullOrWhiteSpace(title))
             throw new ArgumentException("Title cannot be empty", nameof(title));
@@ -20,7 +20,6 @@ public class Document : BaseEntity
 
         Title = title;
         Content = content;
-        FilePath = filePath ?? string.Empty;
     }
 
     public void UpdateContent(string newContent)
