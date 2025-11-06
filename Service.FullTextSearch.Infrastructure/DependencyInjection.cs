@@ -10,11 +10,22 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        services.AddSingleton<IDocumentRepository, InMemoryDocumentRepository>();
-        services.AddSingleton<IInvertedIndexRepository, InMemoryInvertedIndexRepository>();
-
+        // Text Processing
         services.AddScoped<ITokenizer, Tokenizer>();
         services.AddScoped<IStopWordRemover, StopWordRemover>();
+        services.AddScoped<ITextProcessor, StandardTextProcessor>();
+    
+        // Search Pipeline & Components
+        services.AddScoped<ISearchScorer, FrequencyBasedScorer>();
+        services.AddScoped<ISearchPipeline, InvertedIndexSearchPipeline>();
+    
+        // Result Mapping
+        services.AddScoped<IContentSummarizer, ContentSummarizer>();
+        services.AddScoped<ISearchResultMapper, DocumentResultMapper>();
+    
+        // Repositories
+        services.AddSingleton<IDocumentRepository, InMemoryDocumentRepository>();
+        services.AddSingleton<IInvertedIndexRepository, InMemoryInvertedIndexRepository>();
 
         return services;
     }
