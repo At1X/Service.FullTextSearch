@@ -1,0 +1,7 @@
+﻿services:
+  service.fulltextsearch:
+    image: service.fulltextsearch
+    build:
+      context: .
+      dockerfile: Service.FullTextSearch/Dockerfile
+

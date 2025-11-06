@@ -1,0 +1,6 @@
+@Service.FullTextSearch.Infrastructure_HostAddress = http://localhost:5059
+
+GET {{Service.FullTextSearch.Infrastructure_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
