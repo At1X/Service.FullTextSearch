@@ -19,10 +19,10 @@ public class IndexDocumentCommandHandler : IRequestHandler<IndexDocumentCommand,
         ITokenizer tokenizer,
         IStopWordRemover stopWordRemover)
     {
-        _documentRepository = documentRepository;
-        _indexRepository = indexRepository;
-        _tokenizer = tokenizer;
-        _stopWordRemover = stopWordRemover;
+        _documentRepository = documentRepository ??  throw new ArgumentNullException(nameof(documentRepository));
+        _indexRepository = indexRepository ?? throw new ArgumentNullException(nameof(indexRepository));
+        _tokenizer = tokenizer ??  throw new ArgumentNullException(nameof(tokenizer));
+        _stopWordRemover = stopWordRemover ??  throw new ArgumentNullException(nameof(stopWordRemover));
     }
 
     public async Task<Result<Guid>> Handle(IndexDocumentCommand request, CancellationToken cancellationToken)
