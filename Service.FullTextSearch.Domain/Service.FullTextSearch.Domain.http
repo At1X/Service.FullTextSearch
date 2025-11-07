@@ -1,6 +1,0 @@
-@Service.FullTextSearch.Domain_HostAddress = http://localhost:5110
-
-GET {{Service.FullTextSearch.Domain_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
