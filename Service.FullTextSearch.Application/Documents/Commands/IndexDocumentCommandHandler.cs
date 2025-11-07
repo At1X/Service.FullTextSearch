@@ -9,56 +9,29 @@ namespace Service.FullTextSearch.Application.Documents.Commands;
 public class IndexDocumentCommandHandler : IRequestHandler<IndexDocumentCommand, Result<Guid>>
 {
     private readonly IDocumentRepository _documentRepository;
-    private readonly IInvertedIndexRepository _indexRepository;
-    private readonly ITokenizer _tokenizer;
-    private readonly IStopWordRemover _stopWordRemover;
+    private readonly ITextProcessor _textProcessor;
+    private readonly IDocumentIndexer _documentIndexer;
 
     public IndexDocumentCommandHandler(
         IDocumentRepository documentRepository,
-        IInvertedIndexRepository indexRepository,
-        ITokenizer tokenizer,
-        IStopWordRemover stopWordRemover)
+        ITextProcessor textProcessor,
+        IDocumentIndexer documentIndexer)
     {
-        _documentRepository = documentRepository ??  throw new ArgumentNullException(nameof(documentRepository));
-        _indexRepository = indexRepository ?? throw new ArgumentNullException(nameof(indexRepository));
-        _tokenizer = tokenizer ??  throw new ArgumentNullException(nameof(tokenizer));
-        _stopWordRemover = stopWordRemover ??  throw new ArgumentNullException(nameof(stopWordRemover));
+        _documentRepository = documentRepository ?? throw new ArgumentNullException(nameof(documentRepository));
+        _textProcessor = textProcessor ?? throw new ArgumentNullException(nameof(textProcessor));
+        _documentIndexer = documentIndexer ?? throw new ArgumentNullException(nameof(documentIndexer));
     }
 
     public async Task<Result<Guid>> Handle(IndexDocumentCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var document = new Document(
-                request.Title, 
-                request.Content);
-
+            var document = new Document(request.Title, request.Content);
             _documentRepository.Add(document);
 
-            var tokens = _tokenizer.Tokenize(request.Content);
-            var cleanTokens = _stopWordRemover.RemoveStopWords(tokens);
+            var termFrequencies = _textProcessor.CalculateTermFrequency(request.Content);
 
-            var termFrequency = cleanTokens
-                .GroupBy(t => t.ToLowerInvariant())
-                .ToDictionary(g => g.Key, g => g.Count());
-
-            foreach (var (term, frequency) in termFrequency)
-            {
-                var index = _indexRepository.GetByTerm(term);
-                
-                if (index == null)
-                {
-                    index = new InvertedIndex(term);
-                    index.AddOrUpdateDocument(document.Id, frequency);
-                    _indexRepository.Add(index);
-                }
-                else
-                {
-                    index.AddOrUpdateDocument(document.Id, frequency);
-                    _indexRepository.Update(index);
-                }
-            }
-            
+            _documentIndexer.IndexTerms(document.Id, termFrequencies);
 
             return Result<Guid>.Success(document.Id);
         }

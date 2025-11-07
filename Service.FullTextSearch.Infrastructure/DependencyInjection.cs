@@ -1,4 +1,3 @@
-using System.Reflection;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Domain.Interfaces;
 using Service.FullTextSearch.Infrastructure.Persistence.Repositories;
@@ -14,6 +13,7 @@ public static class DependencyInjection
         services.AddScoped<ITokenizer, Tokenizer>();
         services.AddScoped<IStopWordRemover, StopWordRemover>();
         services.AddScoped<ITextProcessor, StandardTextProcessor>();
+        services.AddScoped<IDocumentIndexer, InvertedIndexService>();
     
         // Search Pipeline & Components
         services.AddScoped<ISearchScorer, FrequencyBasedScorer>();

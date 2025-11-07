@@ -19,4 +19,11 @@ public class StandardTextProcessor : ITextProcessor
         var cleaned = _stopWordRemover.RemoveStopWords(tokens);
         return cleaned.Select(t => t.ToLowerInvariant());
     }
+    
+    public Dictionary<string, int> CalculateTermFrequency(string text)
+    {
+        return Process(text)
+            .GroupBy(term => term)
+            .ToDictionary(g => g.Key, g => g.Count());
+    }
 }
