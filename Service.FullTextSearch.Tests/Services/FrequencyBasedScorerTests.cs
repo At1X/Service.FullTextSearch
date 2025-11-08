@@ -1,9 +1,8 @@
-using System.Collections;
 using FluentAssertions;
 using NSubstitute;
 using Service.FullTextSearch.Application.Common.Interfaces;
-using Service.FullTextSearch.Application.Documents.Models;
 using Service.FullTextSearch.Domain.Entities;
+using Service.FullTextSearch.Domain.Models;
 using Service.FullTextSearch.Infrastructure.Services;
 
 namespace Service.FullTextSearch.Tests.Services;

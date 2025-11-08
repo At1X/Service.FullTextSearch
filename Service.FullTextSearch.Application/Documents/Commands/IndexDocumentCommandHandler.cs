@@ -2,7 +2,6 @@ using MediatR;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.Common.Models;
 using Service.FullTextSearch.Domain.Entities;
-using Service.FullTextSearch.Domain.Interfaces;
 
 namespace Service.FullTextSearch.Application.Documents.Commands;
 

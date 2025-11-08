@@ -2,7 +2,6 @@
 using NSubstitute;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Domain.Entities;
-using Service.FullTextSearch.Domain.Interfaces;
 using Service.FullTextSearch.Infrastructure.Services;
 
 namespace Service.FullTextSearch.Tests.Services;

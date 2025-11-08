@@ -1,6 +1,6 @@
 using Service.FullTextSearch.Domain.Entities;
 
-namespace Service.FullTextSearch.Domain.Interfaces;
+namespace Service.FullTextSearch.Application.Common.Interfaces;
 
 public interface IDocumentRepository
 {

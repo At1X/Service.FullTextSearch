@@ -29,9 +29,4 @@
       <ProjectReference Include="..\Service.FullTextSearch.Infrastructure\Service.FullTextSearch.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Commands\" />
-      <Folder Include="Repositories\" />
-    </ItemGroup>
-
 </Project>

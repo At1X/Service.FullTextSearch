@@ -1,7 +1,7 @@
 using Service.FullTextSearch.Application.Common.Interfaces;
-using Service.FullTextSearch.Domain.Interfaces;
 using Service.FullTextSearch.Infrastructure.Persistence.Repositories;
 using Service.FullTextSearch.Infrastructure.Services;
+using Service.FullTextSearch.Tests.Services;
 
 namespace Service.FullTextSearch.Infrastructure;
 
@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.AddScoped<ISearchPipeline, InvertedIndexSearchPipeline>();
         services.AddScoped<IInvertedIndexDocumentUpdater, InvertedIndexDocumentUpdater>();
         services.AddScoped<IInvertedIndexDocumentRetriever, InvertedIndexDocumentRetriever>();
+        services.AddScoped<ISearchResultBuilder, SearchResultBuilder>();
     
         // Result Mapping
         services.AddScoped<IContentSummarizer, ContentSummarizer>();

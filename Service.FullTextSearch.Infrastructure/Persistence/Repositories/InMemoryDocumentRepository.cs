@@ -1,5 +1,5 @@
+using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Domain.Entities;
-using Service.FullTextSearch.Domain.Interfaces;
 
 namespace Service.FullTextSearch.Infrastructure.Persistence.Repositories;
 

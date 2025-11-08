@@ -1,6 +1,5 @@
 using Service.FullTextSearch.Application.Common.Interfaces;
-using Service.FullTextSearch.Application.Documents.Models;
-using Service.FullTextSearch.Domain.Interfaces;
+using Service.FullTextSearch.Domain.Models;
 
 namespace Service.FullTextSearch.Infrastructure.Services;
 

@@ -1,4 +1,4 @@
-namespace Service.FullTextSearch.Application.Documents.Models;
+namespace Service.FullTextSearch.Domain.Models;
 
 public class ScoredDocument
 {
