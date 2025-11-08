@@ -6,15 +6,21 @@ namespace Service.FullTextSearch.Infrastructure.Services;
 
 public class FrequencyBasedScorer : ISearchScorer
 {
+    private readonly IInvertedIndexDocumentRetriever _invertedIndexDocumentRetriever;
+
+    public FrequencyBasedScorer(IInvertedIndexDocumentRetriever invertedIndexDocumentRetriever)
+    {
+        _invertedIndexDocumentRetriever = invertedIndexDocumentRetriever ??  throw new ArgumentNullException(nameof(invertedIndexDocumentRetriever));
+    }
     public IEnumerable<ScoredDocument> Score(IEnumerable<InvertedIndex> indices)
     {
         var documentScores = new Dictionary<Guid, int>();
         
         foreach (var index in indices)
         {
-            foreach (var docId in index.GetDocumentIds())
+            foreach (var docId in _invertedIndexDocumentRetriever.GetDocumentIds(index))
             {
-                var frequency = index.GetFrequency(docId);
+                var frequency = _invertedIndexDocumentRetriever.GetFrequency(index, docId);
                 documentScores[docId] = documentScores.GetValueOrDefault(docId) + frequency;
             }
         }

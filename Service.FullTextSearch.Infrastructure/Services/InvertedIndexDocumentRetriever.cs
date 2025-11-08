@@ -1,0 +1,17 @@
+using Service.FullTextSearch.Application.Common.Interfaces;
+using Service.FullTextSearch.Domain.Entities;
+
+namespace Service.FullTextSearch.Infrastructure.Services;
+
+public class InvertedIndexDocumentRetriever : IInvertedIndexDocumentRetriever
+{
+    public int GetFrequency(InvertedIndex instance, Guid documentId)
+    {
+        return instance.DocumentFrequency.TryGetValue(documentId, out var frequency) ? frequency : 0;
+    }
+
+    public IReadOnlyList<Guid> GetDocumentIds(InvertedIndex instance)
+    {
+        return instance.DocumentFrequency.Keys.ToList().AsReadOnly();
+    }
+}

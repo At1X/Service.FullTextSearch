@@ -18,6 +18,8 @@ public static class DependencyInjection
         // Search Pipeline & Components
         services.AddScoped<ISearchScorer, FrequencyBasedScorer>();
         services.AddScoped<ISearchPipeline, InvertedIndexSearchPipeline>();
+        services.AddScoped<IInvertedIndexDocumentUpdater, InvertedIndexDocumentUpdater>();
+        services.AddScoped<IInvertedIndexDocumentRetriever, InvertedIndexDocumentRetriever>();
     
         // Result Mapping
         services.AddScoped<IContentSummarizer, ContentSummarizer>();

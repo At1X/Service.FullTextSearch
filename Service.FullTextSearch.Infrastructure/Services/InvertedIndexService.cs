@@ -7,10 +7,12 @@ namespace Service.FullTextSearch.Infrastructure.Services;
 public class InvertedIndexService : IDocumentIndexer
 {
     private readonly IInvertedIndexRepository _indexRepository;
+    private readonly IInvertedIndexDocumentUpdater _invertedIndexDocumentUpdater;
 
-    public InvertedIndexService(IInvertedIndexRepository indexRepository)
+    public InvertedIndexService(IInvertedIndexRepository indexRepository,  IInvertedIndexDocumentUpdater invertedIndexDocumentUpdater)
     {
         _indexRepository = indexRepository ?? throw new ArgumentNullException(nameof(indexRepository));
+        _invertedIndexDocumentUpdater =  invertedIndexDocumentUpdater ?? throw new ArgumentNullException(nameof(invertedIndexDocumentUpdater));
     }
 
     public void IndexTerms(Guid documentId, IDictionary<string, int> termFrequencies)
@@ -19,7 +21,7 @@ public class InvertedIndexService : IDocumentIndexer
         {
             var index = _indexRepository.GetByTerm(term) ?? new InvertedIndex(term);
             
-            index.AddOrUpdateDocument(documentId, frequency);
+            _invertedIndexDocumentUpdater.AddOrUpdateDocument(index, documentId, frequency);
             
             if (_indexRepository.GetByTerm(term) == null)
                 _indexRepository.Add(index);
