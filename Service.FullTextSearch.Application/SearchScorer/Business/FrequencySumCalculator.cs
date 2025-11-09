@@ -1,7 +1,6 @@
 using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Abstraction;
 using Service.FullTextSearch.Application.SearchScorer.Abstraction;
 using Service.FullTextSearch.Domain.Entities;
-using Service.FullTextSearch.Domain.Models;
 
 namespace Service.FullTextSearch.Application.SearchScorer.Business;
 
@@ -28,6 +27,7 @@ public class FrequencySumCalculator : ISearchScoreCalculator
 
         return documentScores
             .OrderByDescending(x => x.Value)
-            .Select(x => new ScoredDocument(x.Key, x.Value)).ToList();
+            .Select(x => new ScoredDocument { DocumentId = x.Key, Score = x.Value })
+            .ToList();
     }
 }

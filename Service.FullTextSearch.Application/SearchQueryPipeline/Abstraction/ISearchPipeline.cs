@@ -1,5 +1,5 @@
 
-using Service.FullTextSearch.Domain.Models;
+using Service.FullTextSearch.Domain.Entities;
 
 namespace Service.FullTextSearch.Application.SearchQueryPipeline.Abstraction;
 

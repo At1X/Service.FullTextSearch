@@ -7,7 +7,6 @@ using Service.FullTextSearch.Application.SearchResultBuilder.Abstraction;
 using Service.FullTextSearch.Application.SearchResultBuilder.Business;
 using Service.FullTextSearch.Application.SearchResultMapper.Abstraction;
 using Service.FullTextSearch.Domain.Entities;
-using Service.FullTextSearch.Domain.Models;
 
 namespace Service.FullTextSearch.Tests.Services;
 
@@ -33,8 +32,16 @@ public class SearchResultBuilderTests
         var documentId2 = Guid.NewGuid();
         var scoredDocuments = new List<ScoredDocument>
         {
-            new(documentId1, 10),
-            new(documentId2, 12)
+            new ScoredDocument()
+            {
+                DocumentId = documentId1,
+                Score = 10
+            },
+            new ScoredDocument()
+            {
+                DocumentId = documentId2,
+                Score = 12
+            },
         };
 
         var document1 = new DocumentBuilder()

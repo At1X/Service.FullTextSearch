@@ -2,7 +2,7 @@ using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.SearchQueryPipeline.Abstraction;
 using Service.FullTextSearch.Application.SearchScorer.Abstraction;
 using Service.FullTextSearch.Application.TextProcessor.Abstraction;
-using Service.FullTextSearch.Domain.Models;
+using Service.FullTextSearch.Domain.Entities;
 
 namespace Service.FullTextSearch.Application.SearchQueryPipeline.Business;
 

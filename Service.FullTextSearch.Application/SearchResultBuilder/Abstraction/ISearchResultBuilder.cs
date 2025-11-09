@@ -1,5 +1,5 @@
 ﻿using Service.FullTextSearch.Application.Common.DTOs;
-using Service.FullTextSearch.Domain.Models;
+using Service.FullTextSearch.Domain.Entities;
 
 namespace Service.FullTextSearch.Application.SearchResultBuilder.Abstraction;
 

@@ -2,7 +2,7 @@
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.SearchResultBuilder.Abstraction;
 using Service.FullTextSearch.Application.SearchResultMapper.Abstraction;
-using Service.FullTextSearch.Domain.Models;
+using Service.FullTextSearch.Domain.Entities;
 
 namespace Service.FullTextSearch.Application.SearchResultBuilder.Business;
 

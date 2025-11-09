@@ -5,7 +5,6 @@ using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Abstractio
 using Service.FullTextSearch.Application.SearchScorer.Abstraction;
 using Service.FullTextSearch.Application.SearchScorer.Business;
 using Service.FullTextSearch.Domain.Entities;
-using Service.FullTextSearch.Domain.Models;
 
 namespace Service.FullTextSearch.Tests.Services;
 
@@ -36,8 +35,16 @@ public class FrequencySumCalculatorTests
 
         var expected = new[]
         {
-            new ScoredDocument(documentId1, 3),
-            new ScoredDocument(documentId2, 1)
+            new ScoredDocument()
+            {  
+                DocumentId = documentId1,
+                Score = 3
+            },
+            new ScoredDocument()
+            {
+                DocumentId = documentId2,
+                Score = 1
+            }
         };
         
         // Act
@@ -68,9 +75,21 @@ public class FrequencySumCalculatorTests
 
         var expected = new[]
         {
-            new ScoredDocument(documentId3, 5),
-            new ScoredDocument(documentId2, 3),
-            new ScoredDocument(documentId1, 3)
+            new ScoredDocument()
+            {
+                DocumentId = documentId3,
+                Score = 5
+            },
+            new ScoredDocument()
+            {
+                DocumentId = documentId2,
+                Score = 3
+            },
+            new ScoredDocument()
+            {
+                DocumentId = documentId1,
+                Score = 3
+            }
         };
         
         // Act
@@ -126,7 +145,12 @@ public class FrequencySumCalculatorTests
 
         var indices = new[] { index1, index2 };
 
-        var expected = new[] { new ScoredDocument(documentId, 5) };
+        var expected = new[] { new ScoredDocument()
+            {
+                DocumentId = documentId,
+                Score = 5
+            } 
+        };
 
         // Act
         var result = _sut.CalculateScore(indices);
@@ -147,7 +171,14 @@ public class FrequencySumCalculatorTests
 
         var indices = new[] { index };
 
-        var expected = new[] { new ScoredDocument(documentId, 0) };
+        var expected = new[]
+        {
+            new ScoredDocument()
+            {  
+                DocumentId = documentId,
+                Score = 0
+            } 
+        };
 
         // Act
         var result = _sut.CalculateScore(indices);

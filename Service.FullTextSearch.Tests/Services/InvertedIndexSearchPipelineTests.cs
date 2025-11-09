@@ -6,7 +6,6 @@ using Service.FullTextSearch.Application.SearchQueryPipeline.Business;
 using Service.FullTextSearch.Application.SearchScorer.Abstraction;
 using Service.FullTextSearch.Application.TextProcessor.Abstraction;
 using Service.FullTextSearch.Domain.Entities;
-using Service.FullTextSearch.Domain.Models;
 
 namespace Service.FullTextSearch.Tests.Services;
 
@@ -34,8 +33,16 @@ public class InvertedIndexSearchPipelineTests
         var indices = new List<InvertedIndex>();
         var expectedResults = new List<ScoredDocument>
         {
-            new(Guid.NewGuid(), 8),
-            new(Guid.NewGuid(), 8)
+            new ScoredDocument()
+            {
+                DocumentId = Guid.NewGuid(),
+                Score = 8
+            },
+            new ScoredDocument()
+            {
+                DocumentId = Guid.NewGuid(),
+                Score = 8
+            },
         };
 
         _textProcessor.PreProcessText(searchText).Returns(tokens);
@@ -58,8 +65,16 @@ public class InvertedIndexSearchPipelineTests
         var indices = new List<InvertedIndex>();
         var expectedResults = new List<ScoredDocument>
         {
-            new(Guid.NewGuid(), 8),
-            new(Guid.NewGuid(), 8)
+            new ScoredDocument()
+            {
+                DocumentId = Guid.NewGuid(),
+                Score = 8
+            },
+            new ScoredDocument()
+            {
+                DocumentId = Guid.NewGuid(),
+                Score = 8
+            },
         };
 
         _textProcessor.PreProcessText(searchText).Returns(tokens);
@@ -82,8 +97,16 @@ public class InvertedIndexSearchPipelineTests
         var indices = new List<InvertedIndex>();
         var expectedResults = new List<ScoredDocument>
         {
-            new(Guid.NewGuid(), 8),
-            new(Guid.NewGuid(), 8)
+            new ScoredDocument()
+            {
+                DocumentId = Guid.NewGuid(),
+                Score = 8
+            },
+            new ScoredDocument()
+            {
+                DocumentId = Guid.NewGuid(),
+                Score = 8
+            },
         };
 
         _textProcessor.PreProcessText(searchText).Returns(tokens);

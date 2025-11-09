@@ -8,7 +8,7 @@ using Service.FullTextSearch.Application.Common.Models;
 using Service.FullTextSearch.Application.MedatorActions.Queries;
 using Service.FullTextSearch.Application.SearchQueryPipeline.Abstraction;
 using Service.FullTextSearch.Application.SearchResultBuilder.Abstraction;
-using Service.FullTextSearch.Domain.Models;
+using Service.FullTextSearch.Domain.Entities;
 
 namespace Service.FullTextSearch.Tests.Queries;
 
@@ -37,8 +37,16 @@ public class SearchTermQueryHandlerTests
         
         var scoredDocuments = new List<ScoredDocument>
         {
-            new(documentId1, 10),
-            new(documentId2, 12)
+            new ScoredDocument()
+            {
+                DocumentId = documentId1,
+                Score = 12
+            },
+            new  ScoredDocument()
+            {
+                DocumentId = documentId2,   
+                Score = 13
+            }
         };
 
         var resultDto1 = new DocumentResultDto(documentId1, "Title 1", "Content 1", 10);
@@ -112,7 +120,11 @@ public class SearchTermQueryHandlerTests
         var searchText = "builder failure";
         var query = new SearchTermQuery(searchText);
         
-        var scoredDocuments = new List<ScoredDocument> { new(Guid.NewGuid(), 12) };
+        var scoredDocuments = new List<ScoredDocument> { new ScoredDocument()
+        {
+            DocumentId = Guid.NewGuid(),
+            Score = 12
+        } };
 
         _searchPipeline.Search(searchText).Returns(scoredDocuments);
         _resultBuilder.BuildResults(scoredDocuments).Throws(new Exception("Builder processing failed"));
