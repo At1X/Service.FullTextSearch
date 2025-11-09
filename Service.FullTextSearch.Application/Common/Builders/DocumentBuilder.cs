@@ -1,6 +1,6 @@
 using Service.FullTextSearch.Domain.Entities;
 
-namespace Service.FullTextSearch.Application.Common.EntityBuilder;
+namespace Service.FullTextSearch.Application.Common.Builders;
 
 public class DocumentBuilder
 {

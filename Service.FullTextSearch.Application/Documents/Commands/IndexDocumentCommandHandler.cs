@@ -1,5 +1,5 @@
 using MediatR;
-using Service.FullTextSearch.Application.Common.EntityBuilder;
+using Service.FullTextSearch.Application.Common.Builders;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.Common.Models;
 using Service.FullTextSearch.Application.DocumentIndexer.Abstraction;

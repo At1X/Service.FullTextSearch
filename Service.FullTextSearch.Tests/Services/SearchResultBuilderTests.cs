@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using Service.FullTextSearch.Application.Common.EntityBuilder;
+using Service.FullTextSearch.Application.Common.Builders;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.Documents.DTOs;
 using Service.FullTextSearch.Application.SearchResultBuilder.Abstraction;

@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Service.FullTextSearch.Application.Common.EntityBuilder;
+using Service.FullTextSearch.Application.Common.Builders;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Abstraction;
 using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Business;
