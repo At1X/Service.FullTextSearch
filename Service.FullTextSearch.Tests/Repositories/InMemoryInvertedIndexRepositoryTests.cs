@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Service.FullTextSearch.Application.Common.EntityBuilder;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Domain.Entities;
 using Service.FullTextSearch.Infrastructure.Persistence.Repositories;
@@ -19,7 +20,7 @@ public class InMemoryInvertedIndexRepositoryTests
     {
         // Arrange
         var term = "test";
-        var index = new InvertedIndex(term);
+        var index = new InvertedIndexBuilder().WithTerm(term).Build();
         _sut.Add(index);
 
         // Act
@@ -47,7 +48,7 @@ public class InMemoryInvertedIndexRepositoryTests
     {
         // Arrange
         var term = "Test";
-        var index = new InvertedIndex(term);
+        var index = new InvertedIndexBuilder().WithTerm(term).Build();
         _sut.Add(index);
 
         // Act
@@ -65,8 +66,8 @@ public class InMemoryInvertedIndexRepositoryTests
     public void GetAll_ShouldReturnAllIndices_WhenIndicesExist()
     {
         // Arrange
-        var index1 = new InvertedIndex("term1");
-        var index2 = new InvertedIndex("term2");
+        var index1 = new InvertedIndexBuilder().WithTerm("term 1").Build();
+        var index2 = new InvertedIndexBuilder().WithTerm("term 2").Build();
         var expected = new List<InvertedIndex> { index1, index2 };
 
         _sut.Add(index1);
@@ -96,7 +97,7 @@ public class InMemoryInvertedIndexRepositoryTests
     {
         // Arrange
         var term = "newterm";
-        var index = new InvertedIndex(term);
+        var index = new InvertedIndexBuilder().WithTerm(term).Build();
 
         // Act
         var result = _sut.Add(index);
@@ -111,8 +112,8 @@ public class InMemoryInvertedIndexRepositoryTests
     {
         // Arrange
         var term = "existingterm";
-        var originalIndex = new InvertedIndex(term);
-        var updatedIndex = new InvertedIndex(term);
+        var originalIndex = new InvertedIndexBuilder().WithTerm(term).Build();
+        var updatedIndex = new InvertedIndexBuilder().WithTerm(term).Build();
 
         _sut.Add(originalIndex);
 
@@ -129,8 +130,8 @@ public class InMemoryInvertedIndexRepositoryTests
     {
         // Arrange
         var term = "updateterm";
-        var originalIndex = new InvertedIndex(term);
-        var updatedIndex = new InvertedIndex(term);
+        var originalIndex = new InvertedIndexBuilder().WithTerm(term).Build();
+        var updatedIndex = new InvertedIndexBuilder().WithTerm(term).Build();
 
         _sut.Add(originalIndex);
 
@@ -146,7 +147,7 @@ public class InMemoryInvertedIndexRepositoryTests
     {
         // Arrange
         var term = "newupdateterm";
-        var index = new InvertedIndex(term);
+        var index = new InvertedIndexBuilder().WithTerm(term).Build();
 
         // Act
         _sut.Update(index);
@@ -160,7 +161,7 @@ public class InMemoryInvertedIndexRepositoryTests
     {
         // Arrange
         var term = "deleteterm";
-        var index = new InvertedIndex(term);
+        var index = new InvertedIndexBuilder().WithTerm(term).Build();
         _sut.Add(index);
 
         // Act
@@ -175,7 +176,7 @@ public class InMemoryInvertedIndexRepositoryTests
     {
         // Arrange
         var term = "DeleteTerm";
-        var index = new InvertedIndex(term);
+        var index = new InvertedIndexBuilder().WithTerm(term).Build();
         _sut.Add(index);
 
         // Act
@@ -202,9 +203,9 @@ public class InMemoryInvertedIndexRepositoryTests
     public void SearchTerms_ShouldReturnMatchingIndices_WhenSomeTermsExist()
     {
         // Arrange
-        var index1 = new InvertedIndex("term1");
-        var index2 = new InvertedIndex("term2");
-        var index3 = new InvertedIndex("term3");
+        var index1 = new InvertedIndexBuilder().WithTerm("term1").Build();
+        var index2 = new InvertedIndexBuilder().WithTerm("term2").Build();
+        var index3 = new InvertedIndexBuilder().WithTerm("term3").Build();
 
         _sut.Add(index1);
         _sut.Add(index2);
@@ -237,8 +238,8 @@ public class InMemoryInvertedIndexRepositoryTests
     public void GetAllIndices_ShouldReturnAllIndicesAsDictionary_WhenIndicesExist()
     {
         // Arrange
-        var index1 = new InvertedIndex("term1");
-        var index2 = new InvertedIndex("term2");
+        var index1 = new InvertedIndexBuilder().WithTerm("term1").Build();
+        var index2 = new InvertedIndexBuilder().WithTerm("term2").Build();
         var expected = new Dictionary<string, InvertedIndex>
         {
             { "term1", index1 },
@@ -271,9 +272,9 @@ public class InMemoryInvertedIndexRepositoryTests
     public void Operations_ShouldMaintainSeparateIndices_WhenMultipleIndicesExist()
     {
         // Arrange
-        var index1 = new InvertedIndex("term1");
-        var index2 = new InvertedIndex("term2");
-        var index3 = new InvertedIndex("term3");
+        var index1 = new InvertedIndexBuilder().WithTerm("term1").Build();
+        var index2 = new InvertedIndexBuilder().WithTerm("term2").Build();
+        var index3 = new InvertedIndexBuilder().WithTerm("term3").Build();
 
         _sut.Add(index1);
         _sut.Add(index2);

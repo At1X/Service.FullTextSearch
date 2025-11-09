@@ -1,7 +1,7 @@
-﻿using Service.FullTextSearch.Application.Common.Interfaces;
+﻿using Service.FullTextSearch.Application.Common.EntityBuilder;
+using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.DocumentIndexer.Abstraction;
 using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Abstraction;
-using Service.FullTextSearch.Domain.Entities;
 
 namespace Service.FullTextSearch.Application.DocumentIndexer.Business;
 
@@ -20,7 +20,7 @@ public class InvertedIndexService : IDocumentIndexer
     {
         foreach (var (term, frequency) in termFrequencies)
         {
-            var index = _indexRepository.GetByTerm(term) ?? new InvertedIndex(term);
+            var index = _indexRepository.GetByTerm(term) ?? new InvertedIndexBuilder().WithTerm(term).Build();
             
             _invertedIndexDocumentUpdater.AddOrUpdateDocument(index, documentId, frequency);
             

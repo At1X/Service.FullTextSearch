@@ -34,7 +34,7 @@ public class StandardTextProcessorTests
         _stopWordRemover.RemoveStopWords(tokens).Returns(cleaned);
 
         // Act
-        var result = _sut.Process(text);
+        var result = _sut.PreProcessText(text);
 
         // Assert
         result.Should().BeEquivalentTo(expected);
@@ -49,7 +49,7 @@ public class StandardTextProcessorTests
         _stopWordRemover.RemoveStopWords(Arg.Any<IReadOnlyCollection<string>>()).Returns(Array.Empty<string>());
 
         // Act
-        _sut.Process(text);
+        _sut.PreProcessText(text);
 
         // Assert
         _tokenizer.Received(1).Tokenize(text);
@@ -65,7 +65,7 @@ public class StandardTextProcessorTests
         _stopWordRemover.RemoveStopWords(tokens).Returns(Array.Empty<string>());
 
         // Act
-        _sut.Process(text);
+        _sut.PreProcessText(text);
 
         // Assert
         _stopWordRemover.Received(1).RemoveStopWords(tokens);

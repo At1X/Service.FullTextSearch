@@ -1,4 +1,5 @@
 using MediatR;
+using Service.FullTextSearch.Application.Common.EntityBuilder;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.Common.Models;
 using Service.FullTextSearch.Application.DocumentIndexer.Abstraction;
@@ -27,7 +28,10 @@ public class IndexDocumentCommandHandler : IRequestHandler<IndexDocumentCommand,
     {
         try
         {
-            var document = new Document(request.Title, request.Content);
+            var document = new DocumentBuilder()
+                .WithTitle(request.Title)
+                .WithContent(request.Content)
+                .Build();
             _documentRepository.Add(document);
 
             var termFrequencies = _textProcessor.CalculateTermFrequency(request.Content);

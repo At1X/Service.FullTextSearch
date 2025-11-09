@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Service.FullTextSearch.Application.Common.EntityBuilder;
 using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Business;
 using Service.FullTextSearch.Domain.Entities;
 
@@ -19,7 +20,7 @@ public class InvertedIndexDocumentRetrieverTests
         // Arrange
         var documentId = Guid.NewGuid();
         var documentId2 = Guid.NewGuid();
-        var fistInvertedIndex = new InvertedIndex("term");
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
         fistInvertedIndex.DocumentFrequency[documentId] = 3;
         fistInvertedIndex.DocumentFrequency[documentId2] = 4;
 
@@ -38,7 +39,7 @@ public class InvertedIndexDocumentRetrieverTests
         // Arrange
         var documentId = Guid.NewGuid();
         var documentId2 = Guid.NewGuid();
-        var fistInvertedIndex = new InvertedIndex("term");
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
         fistInvertedIndex.DocumentFrequency[documentId] = 3;
 
         int expectedFrequency = 0;
@@ -55,7 +56,7 @@ public class InvertedIndexDocumentRetrieverTests
     {
         // Arrange
         var documentId = Guid.NewGuid();
-        var invertedIndex = new InvertedIndex("term");
+        var invertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
         invertedIndex.DocumentFrequency.Clear();
 
         // Act
@@ -71,7 +72,7 @@ public class InvertedIndexDocumentRetrieverTests
         // Arrange
         var documentId = Guid.NewGuid();
         var documentId2 = Guid.NewGuid();
-        var fistInvertedIndex = new InvertedIndex("term");
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
         fistInvertedIndex.DocumentFrequency[documentId] = 3;
         fistInvertedIndex.DocumentFrequency[documentId2] = 4;
 
@@ -89,7 +90,7 @@ public class InvertedIndexDocumentRetrieverTests
     public void GetDocumentIds_ShouldReturnEmptyArray_WhenIndexDocumentsAreEmpty()
     {
         // Arrange
-        var fistInvertedIndex = new InvertedIndex("term");
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
         
         // Act
         var result = _sut.GetDocumentIds(fistInvertedIndex);

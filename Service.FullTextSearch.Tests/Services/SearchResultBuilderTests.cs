@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NSubstitute;
+using Service.FullTextSearch.Application.Common.EntityBuilder;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.Documents.DTOs;
 using Service.FullTextSearch.Application.SearchResultBuilder.Abstraction;
@@ -36,8 +37,14 @@ public class SearchResultBuilderTests
             new(documentId2, 12)
         };
 
-        var document1 = new Document( "Title 1", "Content 1");
-        var document2 = new Document( "Title 2", "Content 2");
+        var document1 = new DocumentBuilder()
+            .WithTitle("test title 1")
+            .WithContent("test content 1")
+            .Build();;
+        var document2 = new DocumentBuilder()
+            .WithTitle("test title 2")
+            .WithContent("test content 2")
+            .Build();;
 
         var resultDto1 = new DocumentResultDto(documentId1, "Title 1", "Content 1", 10);
         var resultDto2 = new DocumentResultDto(documentId2, "Title 2", "Content 2", 12);

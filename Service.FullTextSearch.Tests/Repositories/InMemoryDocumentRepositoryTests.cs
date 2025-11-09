@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Service.FullTextSearch.Application.Common.EntityBuilder;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Domain.Entities;
 using Service.FullTextSearch.Infrastructure.Persistence.Repositories;
@@ -18,7 +19,10 @@ public class InMemoryDocumentRepositoryTests
     public void GetById_ShouldReturnDocument_WhenDocumentExists()
     {
         // Arrange
-        var document = new Document("test title", "Test Content");
+        var document = new DocumentBuilder()
+            .WithTitle("test title")
+            .WithContent("test content")
+            .Build();
         _sut.Add(document);
 
         // Act
@@ -45,8 +49,14 @@ public class InMemoryDocumentRepositoryTests
     public void GetAll_ShouldReturnAllDocuments_WhenDocumentsExist()
     {
         // Arrange
-        var document1 = new Document("Test Title 1", "Content 1");
-        var document2 = new Document("Test Title 2", "Content 2");
+        var document1 = new DocumentBuilder()
+            .WithTitle("test title")
+            .WithContent("test content")
+            .Build();;
+        var document2 = new DocumentBuilder()
+            .WithTitle("test title 2")
+            .WithContent("test content 2")
+            .Build();;
         var expected = new List<Document> { document1, document2 };
 
         _sut.Add(document1);
@@ -75,7 +85,10 @@ public class InMemoryDocumentRepositoryTests
     public void Add_ShouldStoreDocument_WhenNewDocumentAdded()
     {
         // Arrange
-        var document = new Document("Test Title 1", "Test Content");
+        var document = new DocumentBuilder()
+            .WithTitle("test title 1")
+            .WithContent("test content")
+            .Build();;
 
         // Act
         var result = _sut.Add(document);
@@ -89,7 +102,10 @@ public class InMemoryDocumentRepositoryTests
     public void Update_ShouldAddDocument_WhenDocumentDoesNotExist()
     {
         // Arrange
-        var document = new Document("Test Title 1", "New Content");
+        var document = new DocumentBuilder()
+            .WithTitle("test title 1")
+            .WithContent("test content")
+            .Build();;
 
         // Act
         _sut.Update(document);
@@ -102,7 +118,10 @@ public class InMemoryDocumentRepositoryTests
     public void Delete_ShouldRemoveDocument_WhenDocumentExists()
     {
         // Arrange
-        var document = new Document("Test Title 1", "Content to delete");
+        var document = new DocumentBuilder()
+            .WithTitle("test title")
+            .WithContent("test content")
+            .Build();;
         _sut.Add(document);
 
         // Act

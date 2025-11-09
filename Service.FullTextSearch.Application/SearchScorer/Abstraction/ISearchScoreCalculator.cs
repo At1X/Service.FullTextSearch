@@ -3,7 +3,7 @@ using Service.FullTextSearch.Domain.Models;
 
 namespace Service.FullTextSearch.Application.SearchScorer.Abstraction;
 
-public interface ISearchScorer
+public interface ISearchScoreCalculator
 {
-    IReadOnlyCollection<ScoredDocument> Score(IReadOnlyCollection<InvertedIndex> indices);
+    IReadOnlyCollection<ScoredDocument> CalculateScore(IReadOnlyCollection<InvertedIndex> indices);
 }

@@ -9,15 +9,15 @@ using Service.FullTextSearch.Domain.Models;
 
 namespace Service.FullTextSearch.Tests.Services;
 
-public class FrequencyBasedScorerTests
+public class FrequencySumCalculatorTests
 {
-    private readonly ISearchScorer _sut;
+    private readonly ISearchScoreCalculator _sut;
     private readonly IInvertedIndexDocumentRetriever _invertedIndexDocumentRetriever;
 
-    public FrequencyBasedScorerTests()
+    public FrequencySumCalculatorTests()
     {  
         _invertedIndexDocumentRetriever = Substitute.For<IInvertedIndexDocumentRetriever>();
-        _sut = new FrequencyBasedScorer(_invertedIndexDocumentRetriever);
+        _sut = new FrequencySumCalculator(_invertedIndexDocumentRetriever);
     }
     
     [Fact]
@@ -41,7 +41,7 @@ public class FrequencyBasedScorerTests
         };
         
         // Act
-        var result = _sut.Score(indices);
+        var result = _sut.CalculateScore(indices);
         
         // Assert
         result.Should().BeEquivalentTo(expected);
@@ -74,7 +74,7 @@ public class FrequencyBasedScorerTests
         };
         
         // Act
-        var result = _sut.Score(indices);
+        var result = _sut.CalculateScore(indices);
         
         // Assert
         result.Should().BeEquivalentTo(expected);
@@ -87,7 +87,7 @@ public class FrequencyBasedScorerTests
         var indices = Array.Empty<InvertedIndex>();
 
         // Act
-        var result = _sut.Score(indices);
+        var result = _sut.CalculateScore(indices);
 
         // Assert
         result.Should().BeEmpty();
@@ -103,7 +103,7 @@ public class FrequencyBasedScorerTests
         var indices = new[] { index };
 
         // Act
-        var result = _sut.Score(indices);
+        var result = _sut.CalculateScore(indices);
 
         // Assert
         result.Should().BeEmpty();
@@ -129,7 +129,7 @@ public class FrequencyBasedScorerTests
         var expected = new[] { new ScoredDocument(documentId, 5) };
 
         // Act
-        var result = _sut.Score(indices);
+        var result = _sut.CalculateScore(indices);
 
         // Assert
         result.Should().BeEquivalentTo(expected);
@@ -150,7 +150,7 @@ public class FrequencyBasedScorerTests
         var expected = new[] { new ScoredDocument(documentId, 0) };
 
         // Act
-        var result = _sut.Score(indices);
+        var result = _sut.CalculateScore(indices);
 
         // Assert
         result.Should().BeEquivalentTo(expected);
@@ -174,7 +174,7 @@ public class FrequencyBasedScorerTests
         var indices = new[] { index };
 
         // Act
-        var result = _sut.Score(indices).ToList();
+        var result = _sut.CalculateScore(indices).ToList();
 
         // Assert
         result.Should().HaveCount(3);

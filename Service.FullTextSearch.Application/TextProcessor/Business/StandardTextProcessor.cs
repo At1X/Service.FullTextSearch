@@ -15,7 +15,7 @@ public class StandardTextProcessor : ITextProcessor
         _stopWordRemover = stopWordRemover ??  throw new ArgumentNullException(nameof(stopWordRemover));
     }
 
-    public IReadOnlyCollection<string> Process(string text)
+    public IReadOnlyCollection<string> PreProcessText(string text)
     {
         var tokens = _tokenizer.Tokenize(text);
         var cleaned = _stopWordRemover.RemoveStopWords(tokens);
@@ -24,7 +24,7 @@ public class StandardTextProcessor : ITextProcessor
     
     public IDictionary<string, int> CalculateTermFrequency(string text)
     {
-        return Process(text)
+        return PreProcessText(text)
             .GroupBy(term => term)
             .ToDictionary(g => g.Key, g => g.Count());
     }

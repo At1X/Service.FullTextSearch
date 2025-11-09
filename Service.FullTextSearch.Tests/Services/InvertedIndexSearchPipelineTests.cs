@@ -15,14 +15,14 @@ public class InvertedIndexSearchPipelineTests
     private readonly ISearchPipeline _sut;
     private readonly IInvertedIndexRepository  _repository;
     private readonly ITextProcessor  _textProcessor;
-    private readonly ISearchScorer  _searchScorer;
+    private readonly ISearchScoreCalculator  _searchScoreCalculator;
 
     public InvertedIndexSearchPipelineTests()
     {
         _repository = Substitute.For<IInvertedIndexRepository>();
         _textProcessor = Substitute.For<ITextProcessor>();
-        _searchScorer = Substitute.For<ISearchScorer>();
-        _sut = new InvertedIndexSearchPipeline(_repository, _textProcessor, _searchScorer);
+        _searchScoreCalculator = Substitute.For<ISearchScoreCalculator>();
+        _sut = new InvertedIndexSearchPipeline(_repository, _textProcessor, _searchScoreCalculator);
     }
     
     [Fact]
@@ -38,15 +38,15 @@ public class InvertedIndexSearchPipelineTests
             new(Guid.NewGuid(), 8)
         };
 
-        _textProcessor.Process(searchText).Returns(tokens);
+        _textProcessor.PreProcessText(searchText).Returns(tokens);
         _repository.SearchTerms(tokens).Returns(indices);
-        _searchScorer.Score(indices).Returns(expectedResults);
+        _searchScoreCalculator.CalculateScore(indices).Returns(expectedResults);
         
         // Act
         _sut.Search(searchText);
 
         // Assert
-        _textProcessor.Received(1).Process(searchText);
+        _textProcessor.Received(1).PreProcessText(searchText);
     }
     
     [Fact]
@@ -62,9 +62,9 @@ public class InvertedIndexSearchPipelineTests
             new(Guid.NewGuid(), 8)
         };
 
-        _textProcessor.Process(searchText).Returns(tokens);
+        _textProcessor.PreProcessText(searchText).Returns(tokens);
         _repository.SearchTerms(tokens).Returns(indices);
-        _searchScorer.Score(indices).Returns(expectedResults);
+        _searchScoreCalculator.CalculateScore(indices).Returns(expectedResults);
         
         // Act
         _sut.Search(searchText);
@@ -86,15 +86,15 @@ public class InvertedIndexSearchPipelineTests
             new(Guid.NewGuid(), 8)
         };
 
-        _textProcessor.Process(searchText).Returns(tokens);
+        _textProcessor.PreProcessText(searchText).Returns(tokens);
         _repository.SearchTerms(tokens).Returns(indices);
-        _searchScorer.Score(indices).Returns(expectedResults);
+        _searchScoreCalculator.CalculateScore(indices).Returns(expectedResults);
         
         // Act
         var result = _sut.Search(searchText);
 
         // Assert
-        _searchScorer.Received(1).Score(indices);
+        _searchScoreCalculator.Received(1).CalculateScore(indices);
         result.Should().BeEquivalentTo(expectedResults);
         
     }

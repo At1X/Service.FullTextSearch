@@ -5,15 +5,15 @@ using Service.FullTextSearch.Domain.Models;
 
 namespace Service.FullTextSearch.Application.SearchScorer.Business;
 
-public class FrequencyBasedScorer : ISearchScorer
+public class FrequencySumCalculator : ISearchScoreCalculator
 {
     private readonly IInvertedIndexDocumentRetriever _invertedIndexDocumentRetriever;
 
-    public FrequencyBasedScorer(IInvertedIndexDocumentRetriever invertedIndexDocumentRetriever)
+    public FrequencySumCalculator(IInvertedIndexDocumentRetriever invertedIndexDocumentRetriever)
     {
         _invertedIndexDocumentRetriever = invertedIndexDocumentRetriever ??  throw new ArgumentNullException(nameof(invertedIndexDocumentRetriever));
     }
-    public IReadOnlyCollection<ScoredDocument> Score(IReadOnlyCollection<InvertedIndex> indices)
+    public IReadOnlyCollection<ScoredDocument> CalculateScore(IReadOnlyCollection<InvertedIndex> indices)
     {
         var documentScores = new Dictionary<Guid, int>();
         

@@ -10,21 +10,21 @@ public class InvertedIndexSearchPipeline : ISearchPipeline
 {
     private readonly IInvertedIndexRepository _indexRepository;
     private readonly ITextProcessor _textProcessor;
-    private readonly ISearchScorer _scorer;
+    private readonly ISearchScoreCalculator _scoreCalculator;
 
     public InvertedIndexSearchPipeline(IInvertedIndexRepository indexRepository, ITextProcessor textProcessor,
-        ISearchScorer scorer)
+        ISearchScoreCalculator scoreCalculator)
     {
         _indexRepository = indexRepository ?? throw new ArgumentNullException(nameof(indexRepository));
         _textProcessor = textProcessor ?? throw new ArgumentNullException(nameof(textProcessor));
-        _scorer = scorer ??  throw new ArgumentNullException(nameof(scorer));
+        _scoreCalculator = scoreCalculator ??  throw new ArgumentNullException(nameof(scoreCalculator));
     }
 
     public IReadOnlyCollection<ScoredDocument> Search(
         string searchText)
     {
-        var tokens = _textProcessor.Process(searchText);
+        var tokens = _textProcessor.PreProcessText(searchText);
         var indices = _indexRepository.SearchTerms(tokens);
-        return _scorer.Score(indices);
+        return _scoreCalculator.CalculateScore(indices);
     }
 }

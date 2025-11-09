@@ -1,5 +1,6 @@
 using FluentAssertions;
 using NSubstitute;
+using Service.FullTextSearch.Application.Common.EntityBuilder;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.ContentSummerizer.Abstraction;
 using Service.FullTextSearch.Application.Documents.DTOs;
@@ -24,10 +25,13 @@ public class DocumentResultMapperTests
     {
         // Arrange
         var documentId = Guid.NewGuid();
-        var document = new Document(
-            "Test Document",
+        var document = new DocumentBuilder()
+            .WithTitle(
+            "Test Document")
+            .WithContent(
             "This is a long content that needs to be summarized for the search results display."
-        );
+            )
+            .Build();
         var score = 85;
         var expectedSummary = "This is a long content that needs...";
     
@@ -47,11 +51,10 @@ public class DocumentResultMapperTests
     public void MapToDto_ShouldCallSummarizerWithCorrectParameters_WhenDocumentProvided()
     {
         // Arrange
-        var document = new Document
-        (
-            "Another Test Document",
-            "Another long content that requires summarization for better user experience."
-        );
+        var document = new DocumentBuilder()
+            .WithTitle("Another Test Document")
+            .WithContent("Another long content that requires summarization for better user experience.")
+            .Build();
         var score = 92;
         var expectedSummary = "Another long content that requires...";
     

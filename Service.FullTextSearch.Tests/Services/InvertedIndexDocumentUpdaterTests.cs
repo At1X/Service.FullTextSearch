@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Service.FullTextSearch.Application.Common.EntityBuilder;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Abstraction;
 using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Business;
@@ -21,7 +22,7 @@ public class InvertedIndexDocumentUpdaterTests
         // Arrange
         var documentId = Guid.NewGuid();
         var documentId2 = Guid.NewGuid();
-        var fistInvertedIndex = new InvertedIndex("term");
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
         fistInvertedIndex.DocumentFrequency[documentId] = 3;
         fistInvertedIndex.DocumentFrequency[documentId2] = 4;
         int expectedFrequency = 6;
@@ -39,7 +40,7 @@ public class InvertedIndexDocumentUpdaterTests
         // Arrange
         var documentId = Guid.NewGuid();
         var documentId2 = Guid.NewGuid();
-        var fistInvertedIndex = new InvertedIndex("term");
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
         fistInvertedIndex.DocumentFrequency[documentId] = 3;
         fistInvertedIndex.DocumentFrequency[documentId2] = 4;
         int expectedFrequency = 4;
@@ -57,7 +58,7 @@ public class InvertedIndexDocumentUpdaterTests
         // Arrange
         var documentId = Guid.NewGuid();
         var documentId2 = Guid.NewGuid();
-        var fistInvertedIndex = new InvertedIndex("term");
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
         fistInvertedIndex.DocumentFrequency[documentId] = 3;
         int expectedFrequency = 6;
         
@@ -74,7 +75,7 @@ public class InvertedIndexDocumentUpdaterTests
         // Arrange
         var documentId = Guid.NewGuid();
         var documentId2 = Guid.NewGuid();
-        var fistInvertedIndex = new InvertedIndex("term");
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
         fistInvertedIndex.DocumentFrequency[documentId] = 3;
         
         // Act
@@ -89,7 +90,7 @@ public class InvertedIndexDocumentUpdaterTests
     {
         // Arrange
         var documentId = Guid.NewGuid();
-        var invertedIndex = new InvertedIndex("term");
+        var invertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
         int invalidFrequency = 0;
 
         // Act
@@ -105,7 +106,7 @@ public class InvertedIndexDocumentUpdaterTests
     {
         // Arrange
         var documentId = Guid.NewGuid();
-        var invertedIndex = new InvertedIndex("term");
+        var invertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
         int invalidFrequency = -1;
 
         // Act

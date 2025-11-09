@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NSubstitute;
+using Service.FullTextSearch.Application.Common.EntityBuilder;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.DocumentIndexer.Abstraction;
 using Service.FullTextSearch.Application.DocumentIndexer.Business;
@@ -50,7 +51,7 @@ public class InvertedIndexServiceTests
         // Arrange
         var documentId = Guid.NewGuid();
         var termFrequencies = new Dictionary<string, int> { { "existing", 3 } };
-        var existingIndex = new InvertedIndex("existing");
+        var existingIndex = new InvertedIndexBuilder().WithTerm("existing").Build();
         
         _indexRepository.GetByTerm("existing").Returns(existingIndex);
 
@@ -75,9 +76,9 @@ public class InvertedIndexServiceTests
             { "term3", 3 }
         };
         
-        _indexRepository.GetByTerm("term1").Returns(new InvertedIndex("term1"));
+        _indexRepository.GetByTerm("term1").Returns(new InvertedIndexBuilder().WithTerm("term1").Build());
         _indexRepository.GetByTerm("term2").Returns((InvertedIndex)null);
-        _indexRepository.GetByTerm("term3").Returns(new InvertedIndex("term3"));
+        _indexRepository.GetByTerm("term3").Returns(new InvertedIndexBuilder().WithTerm("term3").Build());
 
         // Act
         _sut.IndexTerms(documentId, termFrequencies);
@@ -116,7 +117,7 @@ public class InvertedIndexServiceTests
         // Arrange
         var documentId = Guid.NewGuid();
         var termFrequencies = new Dictionary<string, int> { { "existingterm", 4 } };
-        var existingIndex = new InvertedIndex("existingterm");
+        var existingIndex = new InvertedIndexBuilder().WithTerm("existingterm").Build();
         
         _indexRepository.GetByTerm("existingterm").Returns(existingIndex);
 

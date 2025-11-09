@@ -28,21 +28,21 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         // Text Processing
-        services.AddScoped<ITokenizer, Tokenizer>();
-        services.AddScoped<IStopWordRemover, StopWordRemover>();
-        services.AddScoped<ITextProcessor, StandardTextProcessor>();
-        services.AddScoped<IDocumentIndexer, InvertedIndexService>();
+        services.AddSingleton<ITokenizer, Tokenizer>();
+        services.AddSingleton<IStopWordRemover, StopWordRemover>();
+        services.AddSingleton<ITextProcessor, StandardTextProcessor>();
+        services.AddSingleton<IDocumentIndexer, InvertedIndexService>();
     
         // Search Pipeline & Components
-        services.AddScoped<ISearchScorer, FrequencyBasedScorer>();
-        services.AddScoped<ISearchPipeline, InvertedIndexSearchPipeline>();
-        services.AddScoped<IInvertedIndexDocumentUpdater, InvertedIndexDocumentUpdater>();
-        services.AddScoped<IInvertedIndexDocumentRetriever, InvertedIndexDocumentRetriever>();
-        services.AddScoped<ISearchResultBuilder, SearchResultBuilder>();
+        services.AddSingleton<ISearchScoreCalculator, FrequencySumCalculator>();
+        services.AddSingleton<ISearchPipeline, InvertedIndexSearchPipeline>();
+        services.AddSingleton<IInvertedIndexDocumentUpdater, InvertedIndexDocumentUpdater>();
+        services.AddSingleton<IInvertedIndexDocumentRetriever, InvertedIndexDocumentRetriever>();
+        services.AddSingleton<ISearchResultBuilder, SearchResultBuilder>();
     
         // Result Mapping
-        services.AddScoped<IContentSummarizer, ContentSummarizer>();
-        services.AddScoped<ISearchResultMapper, DocumentResultMapper>();
+        services.AddSingleton<IContentSummarizer, ContentSummarizer>();
+        services.AddSingleton<ISearchResultMapper, DocumentResultMapper>();
     
         // Repositories
         services.AddSingleton<IDocumentRepository, InMemoryDocumentRepository>();
