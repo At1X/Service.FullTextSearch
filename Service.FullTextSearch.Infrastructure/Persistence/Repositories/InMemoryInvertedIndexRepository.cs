@@ -13,7 +13,7 @@ public class InMemoryInvertedIndexRepository : IInvertedIndexRepository
         return index;
     }
 
-    public IReadOnlyList<InvertedIndex> GetAll()
+    public IReadOnlyCollection<InvertedIndex> GetAll()
     {
         return _indices.Values.ToList();
     }
@@ -34,19 +34,17 @@ public class InMemoryInvertedIndexRepository : IInvertedIndexRepository
         _indices.Remove(term.ToLowerInvariant());
     }
 
-    public IReadOnlyList<InvertedIndex> SearchTerms(
-        IEnumerable<string> terms)
+    public IReadOnlyCollection<InvertedIndex> SearchTerms(
+        IReadOnlyCollection<string> terms)
     {
-        var results = terms
-            .Select(term => _indices.TryGetValue(term.ToLowerInvariant(), out var index) ? index : null)
-            .Where(i => i != null)
-            .Cast<InvertedIndex>()
+        return terms
+            .Select(term => term.ToLowerInvariant())
+            .Where(_indices.ContainsKey)
+            .Select(term => _indices[term])
             .ToList();
-
-        return results;
     }
 
-    public Dictionary<string, InvertedIndex> GetAllIndices()
+    public IDictionary<string, InvertedIndex> GetAllIndices()
     {
         return _indices.ToDictionary(i => i.Key, i => i.Value);
     }

@@ -13,14 +13,14 @@ public class StandardTextProcessor : ITextProcessor
         _stopWordRemover = stopWordRemover ??  throw new ArgumentNullException(nameof(stopWordRemover));
     }
 
-    public IEnumerable<string> Process(string text)
+    public IReadOnlyCollection<string> Process(string text)
     {
         var tokens = _tokenizer.Tokenize(text);
         var cleaned = _stopWordRemover.RemoveStopWords(tokens);
-        return cleaned.Select(t => t.ToLowerInvariant());
+        return cleaned.Select(t => t.ToLowerInvariant()).ToList();
     }
     
-    public Dictionary<string, int> CalculateTermFrequency(string text)
+    public IDictionary<string, int> CalculateTermFrequency(string text)
     {
         return Process(text)
             .GroupBy(term => term)

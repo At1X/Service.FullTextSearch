@@ -5,10 +5,10 @@ namespace Service.FullTextSearch.Application.Common.Interfaces;
 public interface IInvertedIndexRepository
 {
     InvertedIndex? GetByTerm(string term);
-    IReadOnlyList<InvertedIndex> GetAll();
+    IReadOnlyCollection<InvertedIndex> GetAll();
     InvertedIndex Add(InvertedIndex index);
     void Update(InvertedIndex index);
     void Delete(string term);
-    IReadOnlyList<InvertedIndex> SearchTerms(IEnumerable<string> terms);
-    Dictionary<string, InvertedIndex> GetAllIndices();
+    IReadOnlyCollection<InvertedIndex> SearchTerms(IReadOnlyCollection<string> terms);
+    IDictionary<string, InvertedIndex> GetAllIndices();
 }

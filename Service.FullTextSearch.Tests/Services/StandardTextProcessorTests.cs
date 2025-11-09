@@ -43,7 +43,7 @@ public class StandardTextProcessorTests
         // Arrange
         var text = "Test input text";
         _tokenizer.Tokenize(text).Returns(Array.Empty<string>());
-        _stopWordRemover.RemoveStopWords(Arg.Any<IEnumerable<string>>()).Returns(Array.Empty<string>());
+        _stopWordRemover.RemoveStopWords(Arg.Any<IReadOnlyCollection<string>>()).Returns(Array.Empty<string>());
 
         // Act
         _sut.Process(text);
@@ -98,7 +98,7 @@ public class StandardTextProcessorTests
         // Arrange
         var text = "";
         _tokenizer.Tokenize(text).Returns(Array.Empty<string>());
-        _stopWordRemover.RemoveStopWords(Arg.Any<IEnumerable<string>>()).Returns(Array.Empty<string>());
+        _stopWordRemover.RemoveStopWords(Arg.Any<IReadOnlyCollection<string>>()).Returns(Array.Empty<string>());
 
         // Act
         var result = _sut.CalculateTermFrequency(text);

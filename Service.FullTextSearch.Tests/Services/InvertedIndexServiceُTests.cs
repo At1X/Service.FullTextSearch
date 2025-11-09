@@ -25,7 +25,7 @@ public class InvertedIndexServiceTests
     public void IndexTerms_ShouldAddNewIndex_WhenTermDoesNotExist()
     {
         // Arrange
-        var documentId = Guid.Parse("a8b7c6d5-e4f3-4251-a1b2-c3d4e5f6a7b8");
+        var documentId = Guid.NewGuid();
         var termFrequencies = new Dictionary<string, int> { { "test", 2 } };
         InvertedIndex capturedIndex = null;
         
@@ -46,7 +46,7 @@ public class InvertedIndexServiceTests
     public void IndexTerms_ShouldUpdateExistingIndex_WhenTermExists()
     {
         // Arrange
-        var documentId = Guid.Parse("b9c8d7e6-f5a4-4362-b2c3-d4e5f6a7b8c9");
+        var documentId = Guid.NewGuid();
         var termFrequencies = new Dictionary<string, int> { { "existing", 3 } };
         var existingIndex = new InvertedIndex("existing");
         
@@ -65,7 +65,7 @@ public class InvertedIndexServiceTests
     public void IndexTerms_ShouldProcessMultipleTerms_WhenMultipleTermsProvided()
     {
         // Arrange
-        var documentId = Guid.Parse("c0d9e8f7-a6b5-4473-c4d5-e6f7a8b9c0d1");
+        var documentId = Guid.NewGuid();
         var termFrequencies = new Dictionary<string, int> 
         { 
             { "term1", 1 },
@@ -94,7 +94,7 @@ public class InvertedIndexServiceTests
     public void IndexTerms_ShouldCreateNewIndex_WhenGetByTermReturnsNull()
     {
         // Arrange
-        var documentId = Guid.Parse("d1e0f9a8-b7c6-5584-d5e6-f7a8b9c0d1e2");
+        var documentId = Guid.NewGuid();
         var termFrequencies = new Dictionary<string, int> { { "newterm", 5 } };
         
         _indexRepository.GetByTerm("newterm").Returns((InvertedIndex)null);
@@ -112,7 +112,7 @@ public class InvertedIndexServiceTests
     public void IndexTerms_ShouldUseExistingIndex_WhenGetByTermReturnsIndex()
     {
         // Arrange
-        var documentId = Guid.Parse("e2f1a0b9-c8d7-6695-e6f7-a8b9c0d1e2f3");
+        var documentId = Guid.NewGuid();
         var termFrequencies = new Dictionary<string, int> { { "existingterm", 4 } };
         var existingIndex = new InvertedIndex("existingterm");
         

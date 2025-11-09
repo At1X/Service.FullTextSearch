@@ -82,7 +82,7 @@ public class FrequencyBasedScorerTests
     public void Scorer_ShouldReturnEmpty_WhenNoIndices()
     {
         // Arrange
-        var indices = Enumerable.Empty<InvertedIndex>();
+        var indices = Array.Empty<InvertedIndex>();
 
         // Act
         var result = _sut.Score(indices);

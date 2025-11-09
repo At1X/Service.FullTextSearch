@@ -19,11 +19,11 @@ public class DocumentsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> IndexDocument([FromBody] IndexDocumentDto request)
     {
-        var command = new IndexDocumentCommand(
+        var indexDocumentCommand = new IndexDocumentCommand(
             request.Title, 
             request.Content);
 
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(indexDocumentCommand);
 
         if (!result.IsSuccess)
             return BadRequest(new { error = result.Error });

@@ -46,7 +46,6 @@ public class DocumentResultMapperTests
     public void MapToDto_ShouldCallSummarizerWithCorrectParameters_WhenDocumentProvided()
     {
         // Arrange
-        var documentId = Guid.Parse("f4e2d1c0-9b8a-4765-8321-0e7f6d5c4b3a");
         var document = new Document
         (
             "Another Test Document",

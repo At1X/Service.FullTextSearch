@@ -61,7 +61,7 @@ public class SearchResultBuilderTests
     public void BuildResults_ShouldReturnEmptyList_WhenNoScoredDocumentsProvided()
     {
         // Arrange
-        var scoredDocuments = Enumerable.Empty<ScoredDocument>();
+        var scoredDocuments = Array.Empty<ScoredDocument>();
 
         // Act
         var results = _sut.BuildResults(scoredDocuments);

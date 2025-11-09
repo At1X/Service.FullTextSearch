@@ -5,5 +5,5 @@ namespace Service.FullTextSearch.Application.Common.Interfaces;
 public interface IInvertedIndexDocumentRetriever
 {
     int GetFrequency(InvertedIndex instance, Guid documentId);
-    IReadOnlyList<Guid> GetDocumentIds(InvertedIndex instance);
+    IReadOnlyCollection<Guid> GetDocumentIds(InvertedIndex instance);
 }

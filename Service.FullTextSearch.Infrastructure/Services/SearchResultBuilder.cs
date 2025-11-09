@@ -17,16 +17,12 @@ public class SearchResultBuilder : ISearchResultBuilder
         _resultMapper = resultMapper;
     }
 
-    public List<DocumentResultDto> BuildResults(
-        IEnumerable<ScoredDocument> scoredDocuments)
+    public IReadOnlyCollection<DocumentResultDto> BuildResults(
+        IReadOnlyCollection<ScoredDocument> scoredDocuments)
     {
         return scoredDocuments
-            .Select(sd =>
-            {
-                var doc = _documentRepository.GetById(sd.DocumentId);
-                return doc != null ? _resultMapper.MapToDto(doc, sd.Score) : null;
-            })
-            .Where(result => result != null)
+            .Select(sd => (Document: _documentRepository.GetById(sd.DocumentId), sd.Score))
+            .Select(tuple => _resultMapper.MapToDto(tuple.Document!, tuple.Score))
             .ToList();
     }
 }

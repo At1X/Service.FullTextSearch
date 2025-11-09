@@ -5,7 +5,7 @@ namespace Service.FullTextSearch.Application.Common.Interfaces;
 public interface IDocumentRepository
 {
     Document? GetById(Guid id);
-    IReadOnlyList<Document> GetAll();
+    IReadOnlyCollection<Document> GetAll();
     Document Add(Document document);
     void Update(Document document);
     void Delete(Guid id);

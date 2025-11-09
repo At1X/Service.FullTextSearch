@@ -32,7 +32,7 @@ public class InMemoryDocumentRepositoryTests
     public void GetById_ShouldReturnNull_WhenDocumentDoesNotExist()
     {
         // Arrange
-        var documentId = Guid.Parse("b2c3d4e5-f6a7-8901-bcde-f23456789012");
+        var documentId = Guid.NewGuid();
 
         // Act
         var result = _sut.GetById(documentId);
@@ -116,7 +116,7 @@ public class InMemoryDocumentRepositoryTests
     public void Delete_ShouldDoNothing_WhenDocumentDoesNotExist()
     {
         // Arrange
-        var documentId = Guid.Parse("d0e1f2a3-b4c5-6789-abcd-ef3456789012");
+        var documentId = Guid.NewGuid();
 
         // Act
         _sut.Delete(documentId);

@@ -100,7 +100,7 @@ public class SearchTermQueryHandlerTests
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Be("Search failed: Search pipeline error");
         _searchPipeline.Received(1).Search(searchText);
-        _resultBuilder.DidNotReceiveWithAnyArgs().BuildResults(Arg.Any<IEnumerable<ScoredDocument>>());
+        _resultBuilder.DidNotReceiveWithAnyArgs().BuildResults(Arg.Any<IReadOnlyCollection<ScoredDocument>>());
     }
 
     [Fact]

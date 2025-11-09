@@ -5,6 +5,6 @@ namespace Service.FullTextSearch.Application.Common.Interfaces;
 
 public interface ISearchResultBuilder
 {
-    List<DocumentResultDto> BuildResults(
-        IEnumerable<ScoredDocument> scoredDocuments);
+    IReadOnlyCollection<DocumentResultDto> BuildResults(
+        IReadOnlyCollection<ScoredDocument> scoredDocuments);
 }

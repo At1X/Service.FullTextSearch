@@ -16,12 +16,12 @@ public class SearchController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Search([FromQuery] string q)
+    public async Task<IActionResult> Search([FromQuery] string searchQuery)
     {
-        if (string.IsNullOrWhiteSpace(q))
+        if (string.IsNullOrWhiteSpace(searchQuery))
             return BadRequest(new { error = "Search query cannot be empty" });
 
-        var query = new SearchTermQuery(q);
+        var query = new SearchTermQuery(searchQuery);
         var result = await _mediator.Send(query);
 
         if (!result.IsSuccess)

@@ -28,7 +28,7 @@ public class IndexDocumentCommandHandlerTests
     {
         // Arrange
         var command = new IndexDocumentCommand("Test Title", "Test content for indexing");
-        var documentId = Guid.Parse("a1b2c3d4-e5f6-7890-abcd-ef1234567890");
+        var documentId = Guid.NewGuid();
         var termFrequencies = new Dictionary<string, int> { { "test", 1 }, { "content", 1 }, { "indexing", 1 } };
 
         _documentRepository.When(repo => repo.Add(Arg.Any<Document>()))

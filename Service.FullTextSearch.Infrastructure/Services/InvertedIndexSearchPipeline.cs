@@ -17,7 +17,7 @@ public class InvertedIndexSearchPipeline : ISearchPipeline
         _scorer = scorer ??  throw new ArgumentNullException(nameof(scorer));
     }
 
-    public IEnumerable<ScoredDocument> Search(
+    public IReadOnlyCollection<ScoredDocument> Search(
         string searchText)
     {
         var tokens = _textProcessor.Process(searchText);

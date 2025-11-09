@@ -13,7 +13,7 @@ public class InMemoryDocumentRepository : IDocumentRepository
         return document;
     }
 
-    public IReadOnlyList<Document> GetAll()
+    public IReadOnlyCollection<Document> GetAll()
     {
         return _documents.Values.ToList();
     }

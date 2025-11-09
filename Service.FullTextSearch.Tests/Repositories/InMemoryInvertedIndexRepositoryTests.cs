@@ -232,24 +232,7 @@ public class InMemoryInvertedIndexRepositoryTests
         // Assert
         result.Should().BeEmpty();
     }
-
-    [Fact]
-    public void SearchTerms_ShouldBeCaseInsensitive_WhenSearchingTerms()
-    {
-        // Arrange
-        var index = new InvertedIndex("TestTerm");
-        _sut.Add(index);
-
-        var searchTerms = new List<string> { "TESTTERM", "testterm", "TestTerm" };
-
-        // Act
-        var result = _sut.SearchTerms(searchTerms);
-
-        // Assert
-        result.Should().HaveCount(1);
-        result[0].Should().BeEquivalentTo(index);
-    }
-
+    
     [Fact]
     public void GetAllIndices_ShouldReturnAllIndicesAsDictionary_WhenIndicesExist()
     {

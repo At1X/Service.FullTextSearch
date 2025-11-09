@@ -5,6 +5,6 @@ namespace Service.FullTextSearch.Application.Common.Interfaces;
 
 public interface ISearchPipeline
 {
-    IEnumerable<ScoredDocument> Search(
+    IReadOnlyCollection<ScoredDocument> Search(
         string searchText);
 }

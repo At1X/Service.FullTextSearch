@@ -2,23 +2,23 @@ using Service.FullTextSearch.Application.Common.Interfaces;
 
 namespace Service.FullTextSearch.Infrastructure.Services;
 
-public class StopWordRemover: IStopWordRemover
+public class StopWordRemover : IStopWordRemover
 {
     private readonly HashSet<string> _stopWords;
 
     public StopWordRemover()
     {
-        _stopWords = new HashSet<string>
+        _stopWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "a", "an", "and", "are", "as", "at", "be", "by", "for", "from",
             "has", "he", "in", "is", "it", "its", "of", "on", "that", "the",
-            "to", "was", "will", "with", "the", "this", "but", "they", "have",
+            "to", "was", "will", "with", "this", "but", "they", "have",
             "had", "what", "when", "where", "who", "which", "why", "how"
         };
     }
 
-    public IEnumerable<string> RemoveStopWords(IEnumerable<string> tokens)
+    public IReadOnlyCollection<string> RemoveStopWords(IReadOnlyCollection<string> tokens)
     {
-        return tokens.Where(t => !_stopWords.Contains(t.ToLowerInvariant()));
+        return tokens.Except(_stopWords, StringComparer.OrdinalIgnoreCase).ToList();
     }
 }

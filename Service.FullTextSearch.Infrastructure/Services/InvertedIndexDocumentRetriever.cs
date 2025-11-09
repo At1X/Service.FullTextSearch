@@ -10,7 +10,7 @@ public class InvertedIndexDocumentRetriever : IInvertedIndexDocumentRetriever
         return instance.DocumentFrequency.TryGetValue(documentId, out var frequency) ? frequency : 0;
     }
 
-    public IReadOnlyList<Guid> GetDocumentIds(InvertedIndex instance)
+    public IReadOnlyCollection<Guid> GetDocumentIds(InvertedIndex instance)
     {
         return instance.DocumentFrequency.Keys.ToList().AsReadOnly();
     }

@@ -5,15 +5,15 @@ namespace Service.FullTextSearch.Infrastructure.Services;
 
 public class Tokenizer: ITokenizer
 {
-    public IEnumerable<string> Tokenize(string text)
+    public IReadOnlyCollection<string> Tokenize(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
-            return Enumerable.Empty<string>();
+            return Enumerable.Empty<string>().ToList();
 
         var normalized = text.ToLowerInvariant();
         
         var tokens = Regex.Split(normalized, @"\W+")
-            .Where(t => !string.IsNullOrWhiteSpace(t) && t.Length > 1);
+            .Where(t => !string.IsNullOrWhiteSpace(t) && t.Length > 1).ToList();
 
         return tokens;
     }

@@ -10,9 +10,6 @@ public class InvertedIndexDocumentUpdater : IInvertedIndexDocumentUpdater
         if (frequency <= 0)
             throw new ArgumentException("Frequency must be positive", nameof(frequency));
 
-        if (instance.DocumentFrequency.ContainsKey(documentId))
-            instance.DocumentFrequency[documentId] = frequency;
-        else
-            instance.DocumentFrequency.Add(documentId, frequency);
+        instance.DocumentFrequency[documentId] = frequency;
     }
 }

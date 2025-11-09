@@ -73,7 +73,7 @@ public class StopWordRemoverTests
     public void RemoveStopWords_ShouldHandleEmptyInput_WhenTokensIsEmpty()
     {
         // Arrange
-        var tokens = Enumerable.Empty<string>();
+        var tokens = Array.Empty<string>();
 
         // Act
         var result = _sut.RemoveStopWords(tokens);

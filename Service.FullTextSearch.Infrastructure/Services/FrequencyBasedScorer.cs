@@ -12,7 +12,7 @@ public class FrequencyBasedScorer : ISearchScorer
     {
         _invertedIndexDocumentRetriever = invertedIndexDocumentRetriever ??  throw new ArgumentNullException(nameof(invertedIndexDocumentRetriever));
     }
-    public IEnumerable<ScoredDocument> Score(IEnumerable<InvertedIndex> indices)
+    public IReadOnlyCollection<ScoredDocument> Score(IReadOnlyCollection<InvertedIndex> indices)
     {
         var documentScores = new Dictionary<Guid, int>();
         
@@ -24,9 +24,9 @@ public class FrequencyBasedScorer : ISearchScorer
                 documentScores[docId] = documentScores.GetValueOrDefault(docId) + frequency;
             }
         }
-        
+
         return documentScores
             .OrderByDescending(x => x.Value)
-            .Select(x => new ScoredDocument(x.Key, x.Value));
+            .Select(x => new ScoredDocument(x.Key, x.Value)).ToList();
     }
 }
