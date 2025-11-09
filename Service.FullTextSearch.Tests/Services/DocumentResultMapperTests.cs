@@ -1,9 +1,10 @@
 using FluentAssertions;
 using NSubstitute;
 using Service.FullTextSearch.Application.Common.Interfaces;
+using Service.FullTextSearch.Application.ContentSummerizer.Abstraction;
 using Service.FullTextSearch.Application.Documents.DTOs;
+using Service.FullTextSearch.Application.SearchResultMapper.Business;
 using Service.FullTextSearch.Domain.Entities;
-using Service.FullTextSearch.Infrastructure.Services;
 
 namespace Service.FullTextSearch.Tests.Services;
 

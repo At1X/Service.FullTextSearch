@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Service.FullTextSearch.Infrastructure.Services;
+using Service.FullTextSearch.Application.ContentSummerizer.Business;
 
 namespace Service.FullTextSearch.Tests.Services;
 

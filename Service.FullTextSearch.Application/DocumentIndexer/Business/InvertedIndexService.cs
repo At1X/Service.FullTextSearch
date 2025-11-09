@@ -1,0 +1,33 @@
+﻿using Service.FullTextSearch.Application.Common.Interfaces;
+using Service.FullTextSearch.Application.DocumentIndexer.Abstraction;
+using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Abstraction;
+using Service.FullTextSearch.Domain.Entities;
+
+namespace Service.FullTextSearch.Application.DocumentIndexer.Business;
+
+public class InvertedIndexService : IDocumentIndexer
+{
+    private readonly IInvertedIndexRepository _indexRepository;
+    private readonly IInvertedIndexDocumentUpdater _invertedIndexDocumentUpdater;
+
+    public InvertedIndexService(IInvertedIndexRepository indexRepository,  IInvertedIndexDocumentUpdater invertedIndexDocumentUpdater)
+    {
+        _indexRepository = indexRepository ?? throw new ArgumentNullException(nameof(indexRepository));
+        _invertedIndexDocumentUpdater =  invertedIndexDocumentUpdater ?? throw new ArgumentNullException(nameof(invertedIndexDocumentUpdater));
+    }
+
+    public void IndexTerms(Guid documentId, IDictionary<string, int> termFrequencies)
+    {
+        foreach (var (term, frequency) in termFrequencies)
+        {
+            var index = _indexRepository.GetByTerm(term) ?? new InvertedIndex(term);
+            
+            _invertedIndexDocumentUpdater.AddOrUpdateDocument(index, documentId, frequency);
+            
+            if (_indexRepository.GetByTerm(term) == null)
+                _indexRepository.Add(index);
+            else
+                _indexRepository.Update(index);
+        }
+    }
+}

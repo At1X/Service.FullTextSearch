@@ -24,4 +24,8 @@
       <None Remove="Properties\launchSettings.json" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Common\Services\" />
+    </ItemGroup>
+
 </Project>

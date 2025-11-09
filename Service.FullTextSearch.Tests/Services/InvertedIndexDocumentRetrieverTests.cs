@@ -1,6 +1,6 @@
 using FluentAssertions;
+using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Business;
 using Service.FullTextSearch.Domain.Entities;
-using Service.FullTextSearch.Infrastructure.Services;
 
 namespace Service.FullTextSearch.Tests.Services;
 

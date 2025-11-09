@@ -3,7 +3,9 @@ using MediatR;
 using NSubstitute;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.Common.Models;
+using Service.FullTextSearch.Application.DocumentIndexer.Abstraction;
 using Service.FullTextSearch.Application.Documents.Commands;
+using Service.FullTextSearch.Application.TextProcessor.Abstraction;
 using Service.FullTextSearch.Domain.Entities;
 
 namespace Service.FullTextSearch.Tests.Commands;

@@ -2,6 +2,9 @@
 using NSubstitute;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.Documents.DTOs;
+using Service.FullTextSearch.Application.SearchResultBuilder.Abstraction;
+using Service.FullTextSearch.Application.SearchResultBuilder.Business;
+using Service.FullTextSearch.Application.SearchResultMapper.Abstraction;
 using Service.FullTextSearch.Domain.Entities;
 using Service.FullTextSearch.Domain.Models;
 

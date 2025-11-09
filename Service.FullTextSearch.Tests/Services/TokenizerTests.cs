@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Service.FullTextSearch.Application.Common.Interfaces;
-using Service.FullTextSearch.Infrastructure.Services;
+using Service.FullTextSearch.Application.Tokenizer.Abstraction;
+using Service.FullTextSearch.Application.Tokenizer.Business;
 
 namespace Service.FullTextSearch.Tests.Services;
 

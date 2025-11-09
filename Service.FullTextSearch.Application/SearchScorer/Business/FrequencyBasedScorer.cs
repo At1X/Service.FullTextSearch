@@ -1,0 +1,33 @@
+using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Abstraction;
+using Service.FullTextSearch.Application.SearchScorer.Abstraction;
+using Service.FullTextSearch.Domain.Entities;
+using Service.FullTextSearch.Domain.Models;
+
+namespace Service.FullTextSearch.Application.SearchScorer.Business;
+
+public class FrequencyBasedScorer : ISearchScorer
+{
+    private readonly IInvertedIndexDocumentRetriever _invertedIndexDocumentRetriever;
+
+    public FrequencyBasedScorer(IInvertedIndexDocumentRetriever invertedIndexDocumentRetriever)
+    {
+        _invertedIndexDocumentRetriever = invertedIndexDocumentRetriever ??  throw new ArgumentNullException(nameof(invertedIndexDocumentRetriever));
+    }
+    public IReadOnlyCollection<ScoredDocument> Score(IReadOnlyCollection<InvertedIndex> indices)
+    {
+        var documentScores = new Dictionary<Guid, int>();
+        
+        foreach (var index in indices)
+        {
+            foreach (var docId in _invertedIndexDocumentRetriever.GetDocumentIds(index))
+            {
+                var frequency = _invertedIndexDocumentRetriever.GetFrequency(index, docId);
+                documentScores[docId] = documentScores.GetValueOrDefault(docId) + frequency;
+            }
+        }
+
+        return documentScores
+            .OrderByDescending(x => x.Value)
+            .Select(x => new ScoredDocument(x.Key, x.Value)).ToList();
+    }
+}

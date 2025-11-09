@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Service.FullTextSearch.Application.Common.Interfaces;
-using Service.FullTextSearch.Infrastructure.Services;
+using Service.FullTextSearch.Application.StopWordRemover.Abstraction;
+using Service.FullTextSearch.Application.StopWordRemover.Business;
 
 namespace Service.FullTextSearch.Tests.Services;
 

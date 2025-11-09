@@ -1,7 +1,10 @@
 ﻿using FluentAssertions;
 using NSubstitute;
 using Service.FullTextSearch.Application.Common.Interfaces;
-using Service.FullTextSearch.Infrastructure.Services;
+using Service.FullTextSearch.Application.StopWordRemover.Abstraction;
+using Service.FullTextSearch.Application.TextProcessor.Abstraction;
+using Service.FullTextSearch.Application.TextProcessor.Business;
+using Service.FullTextSearch.Application.Tokenizer.Abstraction;
 
 namespace Service.FullTextSearch.Tests.Services;
 

@@ -1,8 +1,10 @@
 ﻿using FluentAssertions;
 using NSubstitute;
 using Service.FullTextSearch.Application.Common.Interfaces;
+using Service.FullTextSearch.Application.DocumentIndexer.Abstraction;
+using Service.FullTextSearch.Application.DocumentIndexer.Business;
+using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Abstraction;
 using Service.FullTextSearch.Domain.Entities;
-using Service.FullTextSearch.Infrastructure.Services;
 
 namespace Service.FullTextSearch.Tests.Services;
 
