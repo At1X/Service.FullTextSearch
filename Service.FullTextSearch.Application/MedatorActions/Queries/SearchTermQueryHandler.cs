@@ -1,11 +1,10 @@
 using MediatR;
-using Service.FullTextSearch.Application.Common.Interfaces;
+using Service.FullTextSearch.Application.Common.DTOs;
 using Service.FullTextSearch.Application.Common.Models;
-using Service.FullTextSearch.Application.Documents.DTOs;
 using Service.FullTextSearch.Application.SearchQueryPipeline.Abstraction;
 using Service.FullTextSearch.Application.SearchResultBuilder.Abstraction;
 
-namespace Service.FullTextSearch.Application.Documents.Queries;
+namespace Service.FullTextSearch.Application.MedatorActions.Queries;
 
 public class SearchTermQueryHandler : IRequestHandler<SearchTermQuery, Result<SearchResultDto>>
 {

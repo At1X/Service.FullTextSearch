@@ -1,4 +1,4 @@
-using Service.FullTextSearch.Application.Documents.DTOs;
+using Service.FullTextSearch.Application.Common.DTOs;
 using Service.FullTextSearch.Domain.Entities;
 
 namespace Service.FullTextSearch.Application.SearchResultMapper.Abstraction;

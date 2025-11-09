@@ -1,5 +1,5 @@
+using Service.FullTextSearch.Application.Common.DTOs;
 using Service.FullTextSearch.Application.ContentSummerizer.Abstraction;
-using Service.FullTextSearch.Application.Documents.DTOs;
 using Service.FullTextSearch.Application.SearchResultMapper.Abstraction;
 using Service.FullTextSearch.Domain.Entities;
 

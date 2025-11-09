@@ -1,6 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Service.FullTextSearch.Application.Documents.Queries;
+using Service.FullTextSearch.Application.MedatorActions.Queries;
 
 namespace Service.FullTextSearch.WebApi.Controllers;
 

@@ -1,4 +1,4 @@
-namespace Service.FullTextSearch.Application.Documents.DTOs;
+namespace Service.FullTextSearch.Application.Common.DTOs;
 
 public record DocumentResultDto(
     Guid Id,

@@ -2,10 +2,10 @@
 using MediatR;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
+using Service.FullTextSearch.Application.Common.DTOs;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.Common.Models;
-using Service.FullTextSearch.Application.Documents.DTOs;
-using Service.FullTextSearch.Application.Documents.Queries;
+using Service.FullTextSearch.Application.MedatorActions.Queries;
 using Service.FullTextSearch.Application.SearchQueryPipeline.Abstraction;
 using Service.FullTextSearch.Application.SearchResultBuilder.Abstraction;
 using Service.FullTextSearch.Domain.Models;

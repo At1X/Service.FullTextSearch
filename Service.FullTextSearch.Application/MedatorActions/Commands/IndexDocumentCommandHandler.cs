@@ -4,9 +4,8 @@ using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Application.Common.Models;
 using Service.FullTextSearch.Application.DocumentIndexer.Abstraction;
 using Service.FullTextSearch.Application.TextProcessor.Abstraction;
-using Service.FullTextSearch.Domain.Entities;
 
-namespace Service.FullTextSearch.Application.Documents.Commands;
+namespace Service.FullTextSearch.Application.MedatorActions.Commands;
 
 public class IndexDocumentCommandHandler : IRequestHandler<IndexDocumentCommand, Result<Guid>>
 {

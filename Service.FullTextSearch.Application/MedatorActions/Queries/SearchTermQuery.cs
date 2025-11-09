@@ -1,7 +1,7 @@
 using MediatR;
+using Service.FullTextSearch.Application.Common.DTOs;
 using Service.FullTextSearch.Application.Common.Models;
-using Service.FullTextSearch.Application.Documents.DTOs;
 
-namespace Service.FullTextSearch.Application.Documents.Queries;
+namespace Service.FullTextSearch.Application.MedatorActions.Queries;
 
 public record SearchTermQuery(string SearchText) : IRequest<Result<SearchResultDto>>;

@@ -1,6 +1,6 @@
 namespace Service.FullTextSearch.Domain.Entities;
 
-public class InvertedIndex
+public record InvertedIndex
 {
     public required Guid Id { get; set; }
     public required string Term { get; set; }

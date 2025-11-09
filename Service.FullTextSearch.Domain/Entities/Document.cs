@@ -1,6 +1,6 @@
 namespace Service.FullTextSearch.Domain.Entities;
 
-public class Document
+public record Document
 {
     public required Guid Id { get; set; }
     public required string Title { get; set; }
