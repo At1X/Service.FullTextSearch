@@ -31,19 +31,11 @@ public class RequiredTokenHandler : ITokenHandler
 
         var requiredIndices = _indexRepository.SearchTerms(query.RequiredTerms);
 
-        var documentSets = requiredIndices
+        var validDocumentIds = requiredIndices
             .Select(idx => _indexDocumentRetriever.GetDocumentIds(idx))
-            .ToList();
-
-        var validDocumentIds = documentSets
-            .Skip(1)
-            .Aggregate(
-                new HashSet<Guid>(documentSets.First()),
-                (set, next) =>
-                {
-                    set.IntersectWith(next);
-                    return set;
-                });
+            .Aggregate((IEnumerable<Guid> accumulated, IEnumerable<Guid> next) => 
+                accumulated.Intersect(next))
+            .ToHashSet();
 
         return documents
             .Where(d => validDocumentIds.Contains(d.DocumentId))

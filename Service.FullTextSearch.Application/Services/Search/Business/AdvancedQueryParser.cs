@@ -29,7 +29,9 @@ public class AdvancedQueryParser : IQueryParser
         }
 
         var tokens = _tokenizer.Tokenize(query);
-        var classifications = tokens.Select(token => _tokenClassifier.Classify(token)).ToList();
+        var classifications = tokens
+            .Select(token => _tokenClassifier.Classify(token))
+            .ToList();
 
         return _tokenClassifiedAggregator.Aggregate(classifications);
     }
