@@ -12,7 +12,7 @@ public class Tokenizer: ITokenizer
 
         var normalized = text.ToLowerInvariant();
         
-        var tokens = Regex.Split(normalized, @"\W+")
+        var tokens = Regex.Split(normalized, @"\s+")
             .Where(t => !string.IsNullOrWhiteSpace(t) && t.Length > 1).ToList();
 
         return tokens;

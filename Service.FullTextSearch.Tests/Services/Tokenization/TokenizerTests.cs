@@ -15,11 +15,11 @@ public class TokenizerTests
     }
 
     [Fact]
-    public void Tokenize_ShouldReturnWordsSplitByNonWordCharacters_WhenTextContainsPunctuation()
+    public void Tokenize_ShouldReturnWordsSplitOnlyBySpace_WhenTextContainsPunctuation()
     {
         // Arrange
         var text = "Hello, world! This is a test.";
-        var expected = new List<string> { "hello", "world", "this", "is", "test" };
+        var expected = new List<string> { "hello,", "world!", "this", "is", "test." };
 
         // Act
         var result = _sut.Tokenize(text);
@@ -100,7 +100,7 @@ public class TokenizerTests
     {
         // Arrange
         var text = "Hello,   world!!  This...   is   a   test!!!";
-        var expected = new List<string> { "hello", "world", "this", "is", "test" };
+        var expected = new List<string> { "hello,", "world!!", "this...", "is", "test!!!" };
 
         // Act
         var result = _sut.Tokenize(text);
@@ -114,7 +114,7 @@ public class TokenizerTests
     {
         // Arrange
         var text = "word1,word2;word3.word4!word5?word6:word7";
-        var expected = new List<string> { "word1", "word2", "word3", "word4", "word5", "word6", "word7" };
+        var expected = new List<string> { "word1,word2;word3.word4!word5?word6:word7" };
 
         // Act
         var result = _sut.Tokenize(text);
@@ -124,11 +124,11 @@ public class TokenizerTests
     }
 
     [Fact]
-    public void Tokenize_ShouldFilterOutEmptyTokens_WhenTextStartsOrEndsWithNonWordCharacters()
+    public void Tokenize_ShouldNotFilterOutEmptyTokens_WhenTextStartsOrEndsWithNonWordCharacters()
     {
         // Arrange
         var text = "...hello world...";
-        var expected = new List<string> { "hello", "world" };
+        var expected = new List<string> { "...hello", "world..." };
 
         // Act
         var result = _sut.Tokenize(text);
