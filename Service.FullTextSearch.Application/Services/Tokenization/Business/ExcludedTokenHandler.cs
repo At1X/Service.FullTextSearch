@@ -24,6 +24,11 @@ public class ExcludedTokenHandler : ITokenHandler
         IReadOnlyCollection<ScoredDocument> documents,
         ParsedQuery query)
     {
+        if (!query.HasExcludedTerms)
+        {
+            return documents;
+        }
+        
         var excludedIndices = _indexRepository.SearchTerms(query.ExcludedTerms);
 
         var excludedDocumentIds = excludedIndices
