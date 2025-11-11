@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Service.FullTextSearch.Application.Common.DTOs;
-using Service.FullTextSearch.Application.MedatorActions.Commands;
+using Service.FullTextSearch.Application.Services.Mediator.Commands;
 
 namespace Service.FullTextSearch.WebApi.Controllers;
 

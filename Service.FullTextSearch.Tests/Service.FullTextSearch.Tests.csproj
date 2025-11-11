@@ -29,4 +29,8 @@
       <ProjectReference Include="..\Service.FullTextSearch.Infrastructure\Service.FullTextSearch.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\Mediator\" />
+    </ItemGroup>
+
 </Project>

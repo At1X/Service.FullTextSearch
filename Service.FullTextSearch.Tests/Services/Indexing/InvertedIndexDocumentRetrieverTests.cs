@@ -1,0 +1,102 @@
+using FluentAssertions;
+using Service.FullTextSearch.Application.Common.Builders;
+using Service.FullTextSearch.Application.Services.Indexing.Business;
+
+namespace Service.FullTextSearch.Tests.Services.Indexing;
+
+public class InvertedIndexDocumentRetrieverTests
+{
+    private readonly InvertedIndexDocumentRetriever _sut;
+    
+    public InvertedIndexDocumentRetrieverTests()
+    {
+        _sut = new InvertedIndexDocumentRetriever();
+    }
+
+    [Fact]
+    public void GetFrequency_ShouldReturnFrequencyWhenPositive()
+    {
+        // Arrange
+        var documentId = Guid.NewGuid();
+        var documentId2 = Guid.NewGuid();
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
+        fistInvertedIndex.DocumentFrequency[documentId] = 3;
+        fistInvertedIndex.DocumentFrequency[documentId2] = 4;
+
+        int expectedFrequency = 3;
+        
+        // Act
+        var result = _sut.GetFrequency(fistInvertedIndex, documentId);
+        
+        // Assert
+        result.Should().Be(expectedFrequency);
+    }
+    
+    [Fact]
+    public void GetFrequency_ShouldReturnZeroWhenThereIsNoValue()
+    {
+        // Arrange
+        var documentId = Guid.NewGuid();
+        var documentId2 = Guid.NewGuid();
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
+        fistInvertedIndex.DocumentFrequency[documentId] = 3;
+
+        int expectedFrequency = 0;
+        
+        // Act
+        var result = _sut.GetFrequency(fistInvertedIndex, documentId2);
+        
+        // Assert
+        result.Should().Be(expectedFrequency);
+    }
+
+    [Fact]
+    public void GetFrequency_ShouldReturnZero_WhenDocumentFrequencyIsEmpty()
+    {
+        // Arrange
+        var documentId = Guid.NewGuid();
+        var invertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
+        invertedIndex.DocumentFrequency.Clear();
+
+        // Act
+        var result = _sut.GetFrequency(invertedIndex, documentId);
+
+        // Assert
+        result.Should().Be(0);
+    }
+    
+    [Fact]
+    public void GetDocumentIds_ShouldReturnAllDocumentIds_WhenValidItemsAreInIndexDocuments()
+    {
+        // Arrange
+        var documentId = Guid.NewGuid();
+        var documentId2 = Guid.NewGuid();
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
+        fistInvertedIndex.DocumentFrequency[documentId] = 3;
+        fistInvertedIndex.DocumentFrequency[documentId2] = 4;
+
+        IReadOnlyList<Guid> expectedIds = (new[] { documentId, documentId2 });
+        
+        
+        // Act
+        var result = _sut.GetDocumentIds(fistInvertedIndex);
+        
+        // Assert
+        result.Should().BeEquivalentTo(expectedIds);
+    }
+    
+    [Fact]
+    public void GetDocumentIds_ShouldReturnEmptyArray_WhenIndexDocumentsAreEmpty()
+    {
+        // Arrange
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
+        
+        // Act
+        var result = _sut.GetDocumentIds(fistInvertedIndex);
+        
+        // Assert
+        result.Should().BeEquivalentTo(Enumerable.Empty<Guid>());
+    }
+    
+    
+}

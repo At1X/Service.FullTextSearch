@@ -1,0 +1,213 @@
+using FluentAssertions;
+using NSubstitute;
+using Service.FullTextSearch.Application.Services.Indexing.Abstraction;
+using Service.FullTextSearch.Application.Services.Search.Abstraction;
+using Service.FullTextSearch.Application.Services.Search.Business;
+using Service.FullTextSearch.Domain.Entities;
+
+namespace Service.FullTextSearch.Tests.Services.Search;
+
+public class FrequencySumCalculatorTests
+{
+    private readonly ISearchScoreCalculator _sut;
+    private readonly IInvertedIndexDocumentRetriever _invertedIndexDocumentRetriever;
+
+    public FrequencySumCalculatorTests()
+    {  
+        _invertedIndexDocumentRetriever = Substitute.For<IInvertedIndexDocumentRetriever>();
+        _sut = new FrequencySumCalculator(_invertedIndexDocumentRetriever);
+    }
+    
+    [Fact]
+    public void Scorer_ShouldReturnDocumentSearchScore_WhenValidInputWithOneIndice()
+    {
+        // Arrange
+        var documentId1 = Guid.NewGuid();
+        var documentId2 = Guid.NewGuid();
+        var index1 = Substitute.For<InvertedIndex>("term");
+        _invertedIndexDocumentRetriever.GetDocumentIds(index1).Returns(new[] { documentId1, documentId2 });
+        _invertedIndexDocumentRetriever.GetFrequency(index1, documentId1).Returns(3);
+        _invertedIndexDocumentRetriever.GetFrequency(index1, documentId2).Returns(1);
+
+
+        var indices = new[] { index1 };
+
+        var expected = new[]
+        {
+            new ScoredDocument()
+            {  
+                DocumentId = documentId1,
+                Score = 3
+            },
+            new ScoredDocument()
+            {
+                DocumentId = documentId2,
+                Score = 1
+            }
+        };
+        
+        // Act
+        var result = _sut.CalculateScore(indices);
+        
+        // Assert
+        result.Should().BeEquivalentTo(expected);
+    }
+    
+    [Fact]
+    public void Scorer_ShouldReturnDocumentSearchScore_WhenValidInputWithMultipleIndices()
+    {
+        // Arrange
+        var documentId1 = Guid.NewGuid();
+        var documentId2 = Guid.NewGuid();
+        var documentId3 = Guid.NewGuid();
+        var index1 = Substitute.For<InvertedIndex>("firstTerm");
+        _invertedIndexDocumentRetriever.GetDocumentIds(index1).Returns(new[] { documentId1, documentId2 });
+        _invertedIndexDocumentRetriever.GetFrequency(index1, documentId1).Returns(3);
+        _invertedIndexDocumentRetriever.GetFrequency(index1, documentId2).Returns(1);
+
+        var index2 = Substitute.For<InvertedIndex>("secondTerm");
+        _invertedIndexDocumentRetriever.GetDocumentIds(index2).Returns(new[] { documentId2, documentId3 });
+        _invertedIndexDocumentRetriever.GetFrequency(index2, documentId2).Returns(2);
+        _invertedIndexDocumentRetriever.GetFrequency(index2, documentId3).Returns(5);
+        
+        var indices = new[] { index1, index2 };
+
+        var expected = new[]
+        {
+            new ScoredDocument()
+            {
+                DocumentId = documentId3,
+                Score = 5
+            },
+            new ScoredDocument()
+            {
+                DocumentId = documentId2,
+                Score = 3
+            },
+            new ScoredDocument()
+            {
+                DocumentId = documentId1,
+                Score = 3
+            }
+        };
+        
+        // Act
+        var result = _sut.CalculateScore(indices);
+        
+        // Assert
+        result.Should().BeEquivalentTo(expected);
+    }
+    
+    [Fact]
+    public void Scorer_ShouldReturnEmpty_WhenNoIndices()
+    {
+        // Arrange
+        var indices = Array.Empty<InvertedIndex>();
+
+        // Act
+        var result = _sut.CalculateScore(indices);
+
+        // Assert
+        result.Should().BeEmpty();
+    }
+    
+    [Fact]
+    public void Scorer_ShouldHandle_WhenIndexHasNoDocuments()
+    {
+        // Arrange
+        var index = Substitute.For<InvertedIndex>("term");
+        _invertedIndexDocumentRetriever.GetDocumentIds(index).Returns(Enumerable.Empty<Guid>());
+    
+        var indices = new[] { index };
+
+        // Act
+        var result = _sut.CalculateScore(indices);
+
+        // Assert
+        result.Should().BeEmpty();
+    }
+    
+    [Fact]
+    public void Scorer_ShouldSumFrequencies_WhenSameDocumentInMultipleIndices()
+    {
+        // Arrange
+        var documentId = Guid.NewGuid();
+    
+        var index1 = Substitute.For<InvertedIndex>("term1");
+        var index2 = Substitute.For<InvertedIndex>("term2");
+    
+        _invertedIndexDocumentRetriever.GetDocumentIds(index1).Returns(new[] { documentId });
+        _invertedIndexDocumentRetriever.GetDocumentIds(index2).Returns(new[] { documentId });
+    
+        _invertedIndexDocumentRetriever.GetFrequency(index1, documentId).Returns(3);
+        _invertedIndexDocumentRetriever.GetFrequency(index2, documentId).Returns(2);
+
+        var indices = new[] { index1, index2 };
+
+        var expected = new[] { new ScoredDocument()
+            {
+                DocumentId = documentId,
+                Score = 5
+            } 
+        };
+
+        // Act
+        var result = _sut.CalculateScore(indices);
+
+        // Assert
+        result.Should().BeEquivalentTo(expected);
+    }
+    
+    [Fact]
+    public void Scorer_ShouldHandle_WhenDocumentHasZeroFrequency()
+    {
+        // Arrange
+        var documentId = Guid.NewGuid();
+        var index = Substitute.For<InvertedIndex>("term");
+    
+        _invertedIndexDocumentRetriever.GetDocumentIds(index).Returns(new[] { documentId });
+        _invertedIndexDocumentRetriever.GetFrequency(index, documentId).Returns(0);
+
+        var indices = new[] { index };
+
+        var expected = new[]
+        {
+            new ScoredDocument()
+            {  
+                DocumentId = documentId,
+                Score = 0
+            } 
+        };
+
+        // Act
+        var result = _sut.CalculateScore(indices);
+
+        // Assert
+        result.Should().BeEquivalentTo(expected);
+    }
+    
+    [Fact]
+    public void Scorer_ShouldMaintainStableOrder_WhenDocumentsHaveSameScore()
+    {
+        // Arrange
+        var documentId1 = Guid.NewGuid();
+        var documentId2 = Guid.NewGuid();
+        var documentId3 = Guid.NewGuid();
+    
+        var index = Substitute.For<InvertedIndex>("term");
+        _invertedIndexDocumentRetriever.GetDocumentIds(index).Returns(new[] { documentId1, documentId2, documentId3 });
+    
+        _invertedIndexDocumentRetriever.GetFrequency(index, documentId1).Returns(5);
+        _invertedIndexDocumentRetriever.GetFrequency(index, documentId2).Returns(5);
+        _invertedIndexDocumentRetriever.GetFrequency(index, documentId3).Returns(5);
+
+        var indices = new[] { index };
+
+        // Act
+        var result = _sut.CalculateScore(indices).ToList();
+
+        // Assert
+        result.Should().HaveCount(3);
+        result.All(x => x.Score == 5).Should().BeTrue();
+    }
+}

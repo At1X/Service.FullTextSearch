@@ -1,22 +1,12 @@
 using System.Reflection;
-using Service.FullTextSearch.Application.Common.Interfaces;
-using Service.FullTextSearch.Application.ContentSummerizer.Abstraction;
-using Service.FullTextSearch.Application.ContentSummerizer.Business;
-using Service.FullTextSearch.Application.DocumentIndexer.Abstraction;
-using Service.FullTextSearch.Application.DocumentIndexer.Business;
-using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Abstraction;
-using Service.FullTextSearch.Application.InvertedIndexDocumentActions.Business;
-using Service.FullTextSearch.Application.SearchQueryPipeline.Abstraction;
-using Service.FullTextSearch.Application.SearchQueryPipeline.Business;
-using Service.FullTextSearch.Application.SearchResultBuilder.Abstraction;
-using Service.FullTextSearch.Application.SearchResultMapper.Abstraction;
-using Service.FullTextSearch.Application.SearchResultMapper.Business;
-using Service.FullTextSearch.Application.SearchScorer.Abstraction;
-using Service.FullTextSearch.Application.SearchScorer.Business;
-using Service.FullTextSearch.Application.StopWordRemover.Abstraction;
-using Service.FullTextSearch.Application.TextProcessor.Abstraction;
-using Service.FullTextSearch.Application.TextProcessor.Business;
-using Service.FullTextSearch.Application.Tokenizer.Abstraction;
+using Service.FullTextSearch.Application.Services.Indexing.Abstraction;
+using Service.FullTextSearch.Application.Services.Indexing.Business;
+using Service.FullTextSearch.Application.Services.Search.Abstraction;
+using Service.FullTextSearch.Application.Services.Search.Business;
+using Service.FullTextSearch.Application.Services.TextProcessing.Abstraction;
+using Service.FullTextSearch.Application.Services.TextProcessing.Business;
+using Service.FullTextSearch.Application.Services.Tokenization.Abstraction;
+using Service.FullTextSearch.Application.Services.Tokenization.Business;
 
 namespace Service.FullTextSearch.Application;
 
@@ -24,27 +14,36 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
+        // Mediator
         services.AddMediatR(cfg => 
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         
         // Text Processing
-        services.AddSingleton<ITokenizer, Tokenizer.Business.Tokenizer>();
-        services.AddSingleton<IStopWordRemover, StopWordRemover.Business.StopWordRemover>();
+        services.AddSingleton<IStopWordRemover, StopWordRemover>();
         services.AddSingleton<ITextProcessor, StandardTextProcessor>();
+        services.AddSingleton<IContentSummarizer, ContentSummarizer>();
+        
+        // Indexing
         services.AddSingleton<IDocumentIndexer, InvertedIndexService>();
-    
-        // Search Pipeline & Components
-        services.AddSingleton<ISearchScoreCalculator, FrequencySumCalculator>();
-        services.AddSingleton<ISearchPipeline, InvertedIndexSearchPipeline>();
         services.AddSingleton<IInvertedIndexDocumentUpdater, InvertedIndexDocumentUpdater>();
         services.AddSingleton<IInvertedIndexDocumentRetriever, InvertedIndexDocumentRetriever>();
-        services.AddSingleton<ISearchResultBuilder, SearchResultBuilder.Business.SearchResultBuilder>();
     
-        // Result Mapping
-        services.AddSingleton<IContentSummarizer, ContentSummarizer>();
+        // Search
         services.AddSingleton<ISearchResultMapper, DocumentResultMapper>();
+        services.AddSingleton<ISearchFilterAggregator, SearchFilterAggregator>();
+        services.AddSingleton<ISearchScoreCalculator, FrequencySumCalculator>();
+        services.AddSingleton<ISearchPipeline, AdvancedInvertedIndexSearchPipeline>();
+        services.AddSingleton<ISearchResultBuilder, SearchResultBuilder>();
+        services.AddSingleton<IQueryParser, AdvancedQueryParser>();
         
-
+        // Tokenization
+        services.AddSingleton<ITokenizer, Tokenizer>();
+        services.AddSingleton<ITokenClassifiedAggregator, TokenClassifiedAggregator>();
+        services.AddSingleton<ITokenHandler, ExcludedTokenHandler>();
+        services.AddSingleton<ITokenHandler, RequiredTokenHandler>();
+        services.AddSingleton<ITokenHandler, OptionalTokenHandler>();
+        services.AddSingleton<ITokenClassifier, DefaultTokenClassifier>();
+        
         return services;
     }
 }
