@@ -1,0 +1,12 @@
+using Service.FullTextSearch.Domain.Entities;
+
+namespace Service.FullTextSearch.Application.Common.Interfaces;
+
+public interface IDocumentRepository
+{
+    Document? GetById(Guid id);
+    IReadOnlyCollection<Document> GetAll();
+    Document Add(Document document);
+    void Update(Document document);
+    void Delete(Guid id);
+}

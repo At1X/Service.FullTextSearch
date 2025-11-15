@@ -1,0 +1,117 @@
+using FluentAssertions;
+using Service.FullTextSearch.Application.Common.Builders;
+using Service.FullTextSearch.Application.Services.Indexing.Abstraction;
+using Service.FullTextSearch.Application.Services.Indexing.Business;
+
+namespace Service.FullTextSearch.Tests.Services.Indexing;
+
+public class InvertedIndexDocumentUpdaterTests
+{
+    private readonly IInvertedIndexDocumentUpdater _sut;
+
+    public InvertedIndexDocumentUpdaterTests()
+    {
+        _sut = new InvertedIndexDocumentUpdater();
+    }
+
+    [Fact]
+    public void AddOrUpdateDocument_ShouldUpdateADocumentsFrequency_WhenValidInputAndExistingDocument()  
+    {
+        // Arrange
+        var documentId = Guid.NewGuid();
+        var documentId2 = Guid.NewGuid();
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
+        fistInvertedIndex.DocumentFrequency[documentId] = 3;
+        fistInvertedIndex.DocumentFrequency[documentId2] = 4;
+        int expectedFrequency = 6;
+        
+        // Act
+        _sut.AddOrUpdateDocument(fistInvertedIndex, documentId, expectedFrequency);
+        
+        // Assert
+        fistInvertedIndex.DocumentFrequency[documentId].Should().Be(expectedFrequency);
+    }
+    
+    [Fact]
+    public void AddOrUpdateDocument_ShouldNotChangeDocumentFrequency_WhenAnotherDocumentChange()  
+    {
+        // Arrange
+        var documentId = Guid.NewGuid();
+        var documentId2 = Guid.NewGuid();
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
+        fistInvertedIndex.DocumentFrequency[documentId] = 3;
+        fistInvertedIndex.DocumentFrequency[documentId2] = 4;
+        int expectedFrequency = 4;
+        
+        // Act
+        _sut.AddOrUpdateDocument(fistInvertedIndex, documentId, 6);
+        
+        // Assert
+        fistInvertedIndex.DocumentFrequency[documentId2].Should().Be(expectedFrequency);
+    }
+    
+    [Fact]
+    public void AddOrUpdateDocument_ShouldAddNewDocumentWithItsFrequency_WhenValidInputAndNonExistingDocument()  
+    {
+        // Arrange
+        var documentId = Guid.NewGuid();
+        var documentId2 = Guid.NewGuid();
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
+        fistInvertedIndex.DocumentFrequency[documentId] = 3;
+        int expectedFrequency = 6;
+        
+        // Act
+        _sut.AddOrUpdateDocument(fistInvertedIndex, documentId2, expectedFrequency);
+        
+        // Assert
+        fistInvertedIndex.DocumentFrequency[documentId2].Should().Be(expectedFrequency);
+    }
+    
+    [Fact]
+    public void AddOrUpdateDocument_ShouldIncreateNumberOfElementsInDocumentFrequency_WhenValidInputAndNonExistingDocument()  
+    {
+        // Arrange
+        var documentId = Guid.NewGuid();
+        var documentId2 = Guid.NewGuid();
+        var fistInvertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
+        fistInvertedIndex.DocumentFrequency[documentId] = 3;
+        
+        // Act
+        _sut.AddOrUpdateDocument(fistInvertedIndex, documentId2, 6);
+        
+        // Assert
+        fistInvertedIndex.DocumentFrequency.Count.Should().Be(2);
+    }
+    
+    [Fact]
+    public void AddOrUpdateDocument_ShouldThrowArgumentException_WhenFrequencyIsZero()
+    {
+        // Arrange
+        var documentId = Guid.NewGuid();
+        var invertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
+        int invalidFrequency = 0;
+
+        // Act
+        var act = () => _sut.AddOrUpdateDocument(invertedIndex, documentId, invalidFrequency);
+
+        // Assert
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("Frequency must be positive (Parameter 'frequency')");
+    }
+    
+    [Fact]
+    public void AddOrUpdateDocument_ShouldThrowArgumentException_WhenFrequencyIsNegative()
+    {
+        // Arrange
+        var documentId = Guid.NewGuid();
+        var invertedIndex = new InvertedIndexBuilder().WithTerm("term").Build();
+        int invalidFrequency = -1;
+
+        // Act
+        var act = () => _sut.AddOrUpdateDocument(invertedIndex, documentId, invalidFrequency);
+
+        // Assert
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("Frequency must be positive (Parameter 'frequency')");
+    }
+}
