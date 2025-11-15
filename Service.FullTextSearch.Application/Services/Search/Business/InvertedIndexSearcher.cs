@@ -5,13 +5,13 @@ using Service.FullTextSearch.Domain.Entities;
 
 namespace Service.FullTextSearch.Application.Services.Search.Business;
 
-public class InvertedIndexSearchPipeline : ISearchPipeline
+public class InvertedIndexSearcher : ISearcher
 {
     private readonly IInvertedIndexRepository _indexRepository;
     private readonly ITextProcessor _textProcessor;
     private readonly ISearchScoreCalculator _scoreCalculator;
 
-    public InvertedIndexSearchPipeline(IInvertedIndexRepository indexRepository, ITextProcessor textProcessor,
+    public InvertedIndexSearcher(IInvertedIndexRepository indexRepository, ITextProcessor textProcessor,
         ISearchScoreCalculator scoreCalculator)
     {
         _indexRepository = indexRepository ?? throw new ArgumentNullException(nameof(indexRepository));

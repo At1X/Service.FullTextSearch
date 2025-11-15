@@ -46,7 +46,7 @@ public class SearchResultBuilderTests
         var document1 = new DocumentBuilder()
             .WithTitle("test title 1")
             .WithContent("test content 1")
-            .Build();;
+            .Build();
         var document2 = new DocumentBuilder()
             .WithTitle("test title 2")
             .WithContent("test content 2")

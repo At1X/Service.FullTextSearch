@@ -7,14 +7,14 @@ namespace Service.FullTextSearch.Application.Services.Mediator.Queries;
 
 public class SearchTermQueryHandler : IRequestHandler<SearchTermQuery, Result<SearchResultDto>>
 {
-    private readonly ISearchPipeline _searchPipeline;
+    private readonly ISearcher _searcher;
     private readonly ISearchResultBuilder _resultBuilder;
 
     public SearchTermQueryHandler(
-        ISearchPipeline searchPipeline,
+        ISearcher searcher,
         ISearchResultBuilder resultBuilder)
     {
-        _searchPipeline = searchPipeline ??  throw new ArgumentNullException(nameof(searchPipeline));
+        _searcher = searcher ??  throw new ArgumentNullException(nameof(searcher));
         _resultBuilder = resultBuilder ?? throw new ArgumentNullException(nameof(resultBuilder));
     }
 
@@ -24,7 +24,7 @@ public class SearchTermQueryHandler : IRequestHandler<SearchTermQuery, Result<Se
     {
         try
         {
-            var scoredDocuments = _searchPipeline
+            var scoredDocuments = _searcher
                 .Search(request.SearchText);
 
             var results = _resultBuilder.BuildResults(scoredDocuments);
@@ -36,7 +36,7 @@ public class SearchTermQueryHandler : IRequestHandler<SearchTermQuery, Result<Se
         }
         catch (Exception ex)
         {
-            return Result<SearchResultDto>.Failure($"Search failed: {ex.Message}");
+            return Result<SearchResultDto>.Failure($"DocumentIndex failed: {ex.Message}");
         }
     }
 }

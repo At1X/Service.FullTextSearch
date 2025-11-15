@@ -22,7 +22,7 @@ public class StopWordRemoverTests
         var expected = new List<string> { "quick", "brown", "fox", "dog" };
 
         // Act
-        var result = _sut.RemoveStopWords(tokens);
+        var result = _sut.Remove(tokens);
 
         // Assert
         result.Should().BeEquivalentTo(expected);
@@ -36,7 +36,7 @@ public class StopWordRemoverTests
         var expected = new List<string> { "quick", "brown", "fox", "jumps" };
 
         // Act
-        var result = _sut.RemoveStopWords(tokens);
+        var result = _sut.Remove(tokens);
 
         // Assert
         result.Should().BeEquivalentTo(expected);
@@ -49,7 +49,7 @@ public class StopWordRemoverTests
         var tokens = new List<string> { "the", "and", "in", "on", "at" };
 
         // Act
-        var result = _sut.RemoveStopWords(tokens);
+        var result = _sut.Remove(tokens);
 
         // Assert
         result.Should().BeEmpty();
@@ -63,7 +63,7 @@ public class StopWordRemoverTests
         var expected = new List<string> { "QUICK", "Brown", "Fox" };
 
         // Act
-        var result = _sut.RemoveStopWords(tokens);
+        var result = _sut.Remove(tokens);
 
         // Assert
         result.Should().BeEquivalentTo(expected);
@@ -76,7 +76,7 @@ public class StopWordRemoverTests
         var tokens = Array.Empty<string>();
 
         // Act
-        var result = _sut.RemoveStopWords(tokens);
+        var result = _sut.Remove(tokens);
 
         // Assert
         result.Should().BeEmpty();
@@ -90,7 +90,7 @@ public class StopWordRemoverTests
         var expected = Enumerable.Empty<string>();
 
         // Act
-        var result = _sut.RemoveStopWords(tokens);
+        var result = _sut.Remove(tokens);
 
         // Assert
         result.Should().BeEquivalentTo(expected);

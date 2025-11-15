@@ -4,14 +4,14 @@ using Service.FullTextSearch.Domain.Entities;
 
 namespace Service.FullTextSearch.Application.Services.Search.Business;
 
-public class AdvancedInvertedIndexSearchPipeline : ISearchPipeline
+public class AdvancedInvertedIndexSearcher : ISearcher
 {
     private readonly IInvertedIndexRepository _indexRepository;
     private readonly IQueryParser _queryParser;
     private readonly ISearchScoreCalculator _scoreCalculator;
     private readonly ISearchFilterAggregator _searchFilterAggregator;
 
-    public AdvancedInvertedIndexSearchPipeline(
+    public AdvancedInvertedIndexSearcher(
         IInvertedIndexRepository indexRepository,
         IQueryParser queryParser,
         ISearchScoreCalculator scoreCalculator,
@@ -28,13 +28,12 @@ public class AdvancedInvertedIndexSearchPipeline : ISearchPipeline
         var parsedQuery = _queryParser.Parse(searchText);
 
         var allTerms = parsedQuery.RequiredTerms
-            .Concat(parsedQuery.OptionalTerms)
-            .Distinct()
+            .Union(parsedQuery.OptionalTerms) 
             .ToList();
 
-        if (!allTerms.Any())
+        if (allTerms.Count == 0)
         {
-            return Array.Empty<ScoredDocument>();
+            return [];
         }
 
         var indices = _indexRepository.SearchTerms(allTerms);

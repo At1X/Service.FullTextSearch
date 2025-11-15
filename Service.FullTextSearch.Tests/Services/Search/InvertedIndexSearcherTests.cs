@@ -8,19 +8,19 @@ using Service.FullTextSearch.Domain.Entities;
 
 namespace Service.FullTextSearch.Tests.Services.Search;
 
-public class InvertedIndexSearchPipelineTests
+public class InvertedIndexSearcherTests
 {
-    private readonly ISearchPipeline _sut;
+    private readonly ISearcher _sut;
     private readonly IInvertedIndexRepository  _repository;
     private readonly ITextProcessor  _textProcessor;
     private readonly ISearchScoreCalculator  _searchScoreCalculator;
 
-    public InvertedIndexSearchPipelineTests()
+    public InvertedIndexSearcherTests()
     {
         _repository = Substitute.For<IInvertedIndexRepository>();
         _textProcessor = Substitute.For<ITextProcessor>();
         _searchScoreCalculator = Substitute.For<ISearchScoreCalculator>();
-        _sut = new InvertedIndexSearchPipeline(_repository, _textProcessor, _searchScoreCalculator);
+        _sut = new InvertedIndexSearcher(_repository, _textProcessor, _searchScoreCalculator);
     }
     
     [Fact]

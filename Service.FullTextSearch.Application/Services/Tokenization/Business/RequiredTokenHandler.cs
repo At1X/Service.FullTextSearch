@@ -24,6 +24,8 @@ public class RequiredTokenHandler : ITokenHandler
         IReadOnlyCollection<ScoredDocument> documents,
         ParsedQuery query)
     {
+        ArgumentNullException.ThrowIfNull(documents);
+        ArgumentNullException.ThrowIfNull(query);
         if (!query.RequiredTerms.Any())
         {
             return documents;
@@ -31,6 +33,11 @@ public class RequiredTokenHandler : ITokenHandler
 
         var requiredIndices = _indexRepository.SearchTerms(query.RequiredTerms);
 
+        if (requiredIndices.Count == 0)
+        {
+            return [];
+        }
+        
         var validDocumentIds = requiredIndices
             .Select(idx => _indexDocumentRetriever.GetDocumentIds(idx))
             .Aggregate((IEnumerable<Guid> accumulated, IEnumerable<Guid> next) => 

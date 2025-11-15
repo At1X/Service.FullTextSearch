@@ -2,9 +2,8 @@ namespace Service.FullTextSearch.Application.Extensions;
 
 public static class CollectionExtensions
 {
-    public static void AddDistinct(this ICollection<string> collection, string item)
+    public static void AddDistinct(this HashSet<string> hashSet, string item)
     {
-        if (!collection.Contains(item))
-            collection.Add(item);
+        hashSet.Add(item);
     }
 }

@@ -24,6 +24,8 @@ public class OptionalTokenHandler : ITokenHandler
         IReadOnlyCollection<ScoredDocument> documents,
         ParsedQuery query)
     {
+        ArgumentNullException.ThrowIfNull(documents);
+        ArgumentNullException.ThrowIfNull(query);
         if (!query.HasOptionalTerms)
         {
             return documents;

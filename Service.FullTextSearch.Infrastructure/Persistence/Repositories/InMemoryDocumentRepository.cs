@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Service.FullTextSearch.Application.Common.Interfaces;
 using Service.FullTextSearch.Domain.Entities;
 
@@ -20,13 +21,13 @@ public class InMemoryDocumentRepository : IDocumentRepository
 
     public Document Add(Document document)
     {
-        _documents[document.Id] = document;
-        return document;
+        _documents.Add(document.Id, document);
+        return document ?? throw new InvalidOperationException();
     }
 
     public void Update(Document document)
     {
-        _documents[document.Id] = document;
+        _documents.TryAdd(document.Id, document);
     }
 
     public void Delete(Guid id)

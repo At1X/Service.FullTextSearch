@@ -12,6 +12,6 @@ public class InvertedIndexDocumentRetriever : IInvertedIndexDocumentRetriever
 
     public IReadOnlyCollection<Guid> GetDocumentIds(InvertedIndex instance)
     {
-        return instance.DocumentFrequency.Keys.ToList().AsReadOnly();
+        return instance.DocumentFrequency.Keys.ToList();
     }
 }

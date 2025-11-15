@@ -22,17 +22,18 @@ public static class DependencyInjection
         services.AddSingleton<IStopWordRemover, StopWordRemover>();
         services.AddSingleton<ITextProcessor, StandardTextProcessor>();
         services.AddSingleton<IContentSummarizer, ContentSummarizer>();
+        services.AddSingleton<ICalculateTermFrequency, CalculateTermFrequency>();
         
         // Indexing
         services.AddSingleton<IDocumentIndexer, InvertedIndexService>();
         services.AddSingleton<IInvertedIndexDocumentUpdater, InvertedIndexDocumentUpdater>();
         services.AddSingleton<IInvertedIndexDocumentRetriever, InvertedIndexDocumentRetriever>();
     
-        // Search
+        // DocumentIndex
         services.AddSingleton<ISearchResultMapper, DocumentResultMapper>();
         services.AddSingleton<ISearchFilterAggregator, SearchFilterAggregator>();
         services.AddSingleton<ISearchScoreCalculator, FrequencySumCalculator>();
-        services.AddSingleton<ISearchPipeline, AdvancedInvertedIndexSearchPipeline>();
+        services.AddSingleton<ISearcher, AdvancedInvertedIndexSearcher>();
         services.AddSingleton<ISearchResultBuilder, SearchResultBuilder>();
         services.AddSingleton<IQueryParser, AdvancedQueryParser>();
         

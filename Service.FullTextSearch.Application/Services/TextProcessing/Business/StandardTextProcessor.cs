@@ -17,14 +17,8 @@ public class StandardTextProcessor : ITextProcessor
     public IReadOnlyCollection<string> PreProcessText(string text)
     {
         var tokens = _tokenizer.Tokenize(text);
-        var cleaned = _stopWordRemover.RemoveStopWords(tokens);
+        var cleaned = _stopWordRemover.Remove(tokens);
         return cleaned.Select(t => t.ToLowerInvariant()).ToList();
     }
     
-    public IDictionary<string, int> CalculateTermFrequency(string text)
-    {
-        return PreProcessText(text)
-            .GroupBy(term => term)
-            .ToDictionary(g => g.Key, g => g.Count());
-    }
 }

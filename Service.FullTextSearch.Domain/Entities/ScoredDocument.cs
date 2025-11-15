@@ -1,7 +1,7 @@
 namespace Service.FullTextSearch.Domain.Entities;
 
-public class ScoredDocument
+public record ScoredDocument
 {
-    public Guid DocumentId { get; set; }
-    public int Score { get; set;  }
+    public Guid DocumentId { get; init; }
+    public int Score { get; init;  }
 }

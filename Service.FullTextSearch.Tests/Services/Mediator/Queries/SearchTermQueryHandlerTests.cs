@@ -12,15 +12,15 @@ namespace Service.FullTextSearch.Tests.Services.Mediator.Queries;
 
 public class SearchTermQueryHandlerTests
 {
-    private readonly ISearchPipeline _searchPipeline;
+    private readonly ISearcher _searcher;
     private readonly ISearchResultBuilder _resultBuilder;
     private readonly IRequestHandler<SearchTermQuery, Result<SearchResultDto>> _sut;
 
     public SearchTermQueryHandlerTests()
     {
-        _searchPipeline = Substitute.For<ISearchPipeline>();
+        _searcher = Substitute.For<ISearcher>();
         _resultBuilder = Substitute.For<ISearchResultBuilder>();
-        _sut = new SearchTermQueryHandler(_searchPipeline, _resultBuilder);
+        _sut = new SearchTermQueryHandler(_searcher, _resultBuilder);
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public class SearchTermQueryHandlerTests
         var resultDto2 = new DocumentResultDto(documentId2, "Title 2", "Content 2", 12);
         var builtResults = new List<DocumentResultDto> { resultDto1, resultDto2 };
 
-        _searchPipeline.Search(searchText).Returns(scoredDocuments);
+        _searcher.Search(searchText).Returns(scoredDocuments);
         _resultBuilder.BuildResults(scoredDocuments).Returns(builtResults);
 
         var expectedSearchResult = new SearchResultDto(builtResults, 2, searchText);
@@ -62,7 +62,7 @@ public class SearchTermQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Data.Should().BeEquivalentTo(expectedSearchResult);
-        _searchPipeline.Received(1).Search(searchText);
+        _searcher.Received(1).Search(searchText);
         _resultBuilder.Received(1).BuildResults(scoredDocuments);
     }
 
@@ -76,7 +76,7 @@ public class SearchTermQueryHandlerTests
         var scoredDocuments = new List<ScoredDocument>();
         var builtResults = new List<DocumentResultDto>();
 
-        _searchPipeline.Search(searchText).Returns(scoredDocuments);
+        _searcher.Search(searchText).Returns(scoredDocuments);
         _resultBuilder.BuildResults(scoredDocuments).Returns(builtResults);
 
         var expectedSearchResult = new SearchResultDto(builtResults, 0, searchText);
@@ -87,7 +87,7 @@ public class SearchTermQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Data.Should().BeEquivalentTo(expectedSearchResult);
-        _searchPipeline.Received(1).Search(searchText);
+        _searcher.Received(1).Search(searchText);
         _resultBuilder.Received(1).BuildResults(scoredDocuments);
     }
 
@@ -98,16 +98,16 @@ public class SearchTermQueryHandlerTests
         var searchText = "failing query";
         var query = new SearchTermQuery(searchText);
         
-        var exception = new Exception("Search pipeline error");
-        _searchPipeline.Search(searchText).Throws(exception);
+        var exception = new Exception("DocumentIndex pipeline error");
+        _searcher.Search(searchText).Throws(exception);
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Should().Be("Search failed: Search pipeline error");
-        _searchPipeline.Received(1).Search(searchText);
+        result.Error.Should().Be("DocumentIndex failed: DocumentIndex pipeline error");
+        _searcher.Received(1).Search(searchText);
         _resultBuilder.DidNotReceiveWithAnyArgs().BuildResults(Arg.Any<IReadOnlyCollection<ScoredDocument>>());
     }
 
@@ -124,7 +124,7 @@ public class SearchTermQueryHandlerTests
             Score = 12
         } };
 
-        _searchPipeline.Search(searchText).Returns(scoredDocuments);
+        _searcher.Search(searchText).Returns(scoredDocuments);
         _resultBuilder.BuildResults(scoredDocuments).Throws(new Exception("Builder processing failed"));
 
         // Act
@@ -132,8 +132,8 @@ public class SearchTermQueryHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Error.Should().Be("Search failed: Builder processing failed");
-        _searchPipeline.Received(1).Search(searchText);
+        result.Error.Should().Be("DocumentIndex failed: Builder processing failed");
+        _searcher.Received(1).Search(searchText);
         _resultBuilder.Received(1).BuildResults(scoredDocuments);
     }
     

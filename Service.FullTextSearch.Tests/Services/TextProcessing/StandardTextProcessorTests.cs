@@ -29,7 +29,7 @@ public class StandardTextProcessorTests
         var expected = new[] { "quick", "brown", "fox" };
 
         _tokenizer.Tokenize(text).Returns(tokens);
-        _stopWordRemover.RemoveStopWords(tokens).Returns(cleaned);
+        _stopWordRemover.Remove(tokens).Returns(cleaned);
 
         // Act
         var result = _sut.PreProcessText(text);
@@ -44,7 +44,7 @@ public class StandardTextProcessorTests
         // Arrange
         var text = "Test input text";
         _tokenizer.Tokenize(text).Returns(Array.Empty<string>());
-        _stopWordRemover.RemoveStopWords(Arg.Any<IReadOnlyCollection<string>>()).Returns(Array.Empty<string>());
+        _stopWordRemover.Remove(Arg.Any<IReadOnlyCollection<string>>()).Returns(Array.Empty<string>());
 
         // Act
         _sut.PreProcessText(text);
@@ -60,13 +60,13 @@ public class StandardTextProcessorTests
         var text = "Test input text";
         var tokens = new[] { "Test", "input", "text" };
         _tokenizer.Tokenize(text).Returns(tokens);
-        _stopWordRemover.RemoveStopWords(tokens).Returns(Array.Empty<string>());
+        _stopWordRemover.Remove(tokens).Returns(Array.Empty<string>());
 
         // Act
         _sut.PreProcessText(text);
 
         // Assert
-        _stopWordRemover.Received(1).RemoveStopWords(tokens);
+        _stopWordRemover.Received(1).Remove(tokens);
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public class StandardTextProcessorTests
         };
 
         _tokenizer.Tokenize(text).Returns(tokens);
-        _stopWordRemover.RemoveStopWords(tokens).Returns(cleaned);
+        _stopWordRemover.Remove(tokens).Returns(cleaned);
 
         // Act
         var result = _sut.CalculateTermFrequency(text);
@@ -99,7 +99,7 @@ public class StandardTextProcessorTests
         // Arrange
         var text = "";
         _tokenizer.Tokenize(text).Returns(Array.Empty<string>());
-        _stopWordRemover.RemoveStopWords(Arg.Any<IReadOnlyCollection<string>>()).Returns(Array.Empty<string>());
+        _stopWordRemover.Remove(Arg.Any<IReadOnlyCollection<string>>()).Returns(Array.Empty<string>());
 
         // Act
         var result = _sut.CalculateTermFrequency(text);
@@ -118,7 +118,7 @@ public class StandardTextProcessorTests
         var expected = new Dictionary<string, int> { { "hello", 3 } };
 
         _tokenizer.Tokenize(text).Returns(tokens);
-        _stopWordRemover.RemoveStopWords(tokens).Returns(cleaned);
+        _stopWordRemover.Remove(tokens).Returns(cleaned);
 
         // Act
         var result = _sut.CalculateTermFrequency(text);
@@ -142,7 +142,7 @@ public class StandardTextProcessorTests
         };
 
         _tokenizer.Tokenize(text).Returns(tokens);
-        _stopWordRemover.RemoveStopWords(tokens).Returns(cleaned);
+        _stopWordRemover.Remove(tokens).Returns(cleaned);
 
         // Act
         var result = _sut.CalculateTermFrequency(text);

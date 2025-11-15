@@ -10,17 +10,17 @@ namespace Service.FullTextSearch.Application.Services.Mediator.Commands;
 public class IndexDocumentCommandHandler : IRequestHandler<IndexDocumentCommand, Result<Guid>>
 {
     private readonly IDocumentRepository _documentRepository;
-    private readonly ITextProcessor _textProcessor;
     private readonly IDocumentIndexer _documentIndexer;
+    private readonly ICalculateTermFrequency  _calculateTermFrequency;
 
     public IndexDocumentCommandHandler(
         IDocumentRepository documentRepository,
-        ITextProcessor textProcessor,
-        IDocumentIndexer documentIndexer)
+        IDocumentIndexer documentIndexer,
+        ICalculateTermFrequency calculateTermFrequency)
     {
         _documentRepository = documentRepository ?? throw new ArgumentNullException(nameof(documentRepository));
-        _textProcessor = textProcessor ?? throw new ArgumentNullException(nameof(textProcessor));
         _documentIndexer = documentIndexer ?? throw new ArgumentNullException(nameof(documentIndexer));
+        _calculateTermFrequency = calculateTermFrequency ?? throw new ArgumentNullException(nameof(calculateTermFrequency));
     }
 
     public async Task<Result<Guid>> Handle(IndexDocumentCommand request, CancellationToken cancellationToken)
@@ -33,7 +33,7 @@ public class IndexDocumentCommandHandler : IRequestHandler<IndexDocumentCommand,
                 .Build();
             _documentRepository.Add(document);
 
-            var termFrequencies = _textProcessor.CalculateTermFrequency(request.Content);
+            var termFrequencies = _calculateTermFrequency.Calculate(request.Content);
 
             _documentIndexer.IndexTerms(document.Id, termFrequencies);
 

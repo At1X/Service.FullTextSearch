@@ -17,7 +17,7 @@ public class StopWordRemover : IStopWordRemover
         };
     }
 
-    public IReadOnlyCollection<string> RemoveStopWords(IReadOnlyCollection<string> tokens)
+    public IReadOnlyCollection<string> Remove(IReadOnlyCollection<string> tokens)
     {
         return tokens.Except(_stopWords, StringComparer.OrdinalIgnoreCase).ToList();
     }

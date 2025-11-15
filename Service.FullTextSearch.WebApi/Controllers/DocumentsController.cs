@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Service.FullTextSearch.Application.Common.DTOs;
 using Service.FullTextSearch.Application.Services.Mediator.Commands;
+using Service.FullTextSearch.Domain.ResponseMessages;
 
 namespace Service.FullTextSearch.WebApi.Controllers;
 
@@ -26,9 +27,11 @@ public class DocumentsController : ControllerBase
         var result = await _mediator.Send(indexDocumentCommand);
 
         if (!result.IsSuccess)
+        {
             return BadRequest(new { error = result.Error });
+        }
 
-        return Ok(new { documentId = result.Data, message = "Document indexed successfully" });
+        return Ok(new { documentId = result.Data, message = DocumentIndexResponse.Success });
     }
     
 }

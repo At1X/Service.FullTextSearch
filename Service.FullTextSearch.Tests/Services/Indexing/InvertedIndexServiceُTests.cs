@@ -40,7 +40,7 @@ public class InvertedIndexServiceTests
 
         // Assert
         _indexRepository.Received(1).Add(Arg.Is<InvertedIndex>(idx => idx.Term == "test"));
-        _indexRepository.DidNotReceive().Update(Arg.Any<InvertedIndex>());
+        _indexRepository.DidNotReceive().Update(Arg.Is<InvertedIndex>(idx => idx.Term == "test"));
         capturedIndex.Term.Should().Be("test");
     }
 

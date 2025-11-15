@@ -7,21 +7,21 @@ using Service.FullTextSearch.Domain.Entities;
 
 namespace Service.FullTextSearch.Tests.Services.Search;
 
-public class AdvancedInvertedIndexSearchPipelineTests
+public class AdvancedInvertedIndexSearcherTests
 {
     private readonly IInvertedIndexRepository _indexRepository;
     private readonly IQueryParser _queryParser;
     private readonly ISearchScoreCalculator _scoreCalculator;
     private readonly ISearchFilterAggregator _searchFilterAggregator;
-    private readonly AdvancedInvertedIndexSearchPipeline _sut;
+    private readonly AdvancedInvertedIndexSearcher _sut;
 
-    public AdvancedInvertedIndexSearchPipelineTests()
+    public AdvancedInvertedIndexSearcherTests()
     {
         _indexRepository = Substitute.For<IInvertedIndexRepository>();
         _queryParser = Substitute.For<IQueryParser>();
         _scoreCalculator = Substitute.For<ISearchScoreCalculator>();
         _searchFilterAggregator = Substitute.For<ISearchFilterAggregator>();
-        _sut = new AdvancedInvertedIndexSearchPipeline(
+        _sut = new AdvancedInvertedIndexSearcher(
             _indexRepository,
             _queryParser,
             _scoreCalculator,

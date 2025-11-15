@@ -22,8 +22,11 @@ public class SearchResultBuilder : ISearchResultBuilder
         IReadOnlyCollection<ScoredDocument> scoredDocuments)
     {
         return scoredDocuments
-            .Select(sd => (Document: _documentRepository.GetById(sd.DocumentId), sd.Score))
-            .Select(tuple => _resultMapper.MapToDto(tuple.Document!, tuple.Score))
+            .Select(sd => 
+            {
+                var document = _documentRepository.GetById(sd.DocumentId);
+                return _resultMapper.MapToDto(document!, sd.Score);
+            })
             .ToList();
     }
 }

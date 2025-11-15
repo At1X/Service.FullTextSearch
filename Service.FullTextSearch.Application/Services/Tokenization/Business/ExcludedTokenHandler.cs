@@ -23,7 +23,11 @@ public class ExcludedTokenHandler : ITokenHandler
     public IReadOnlyCollection<ScoredDocument> FilterHandler(
         IReadOnlyCollection<ScoredDocument> documents,
         ParsedQuery query)
+    
     {
+        ArgumentNullException.ThrowIfNull(documents);
+        ArgumentNullException.ThrowIfNull(query);
+        
         if (!query.HasExcludedTerms)
         {
             return documents;
