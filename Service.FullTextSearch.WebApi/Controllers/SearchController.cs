@@ -19,13 +19,17 @@ public class SearchController : ControllerBase
     public async Task<IActionResult> Search([FromQuery] string searchQuery)
     {
         if (string.IsNullOrWhiteSpace(searchQuery))
+        {
             return BadRequest(new { error = "DocumentIndex query cannot be empty" });
+        }
 
         var query = new SearchTermQuery(searchQuery);
         var result = await _mediator.Send(query);
 
         if (!result.IsSuccess)
+        {
             return BadRequest(new { error = result.Error });
+        }
 
         return Ok(result.Data);
     }

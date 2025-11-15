@@ -8,7 +8,9 @@ public class InvertedIndexDocumentUpdater : IInvertedIndexDocumentUpdater
     public void AddOrUpdateDocument(InvertedIndex instance, Guid documentId, int frequency)
     {
         if (frequency <= 0)
+        {
             throw new ArgumentException("Frequency must be positive", nameof(frequency));
+        }
 
         instance.DocumentFrequency[documentId] = frequency;
     }

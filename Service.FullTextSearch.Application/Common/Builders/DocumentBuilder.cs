@@ -22,11 +22,14 @@ public class DocumentBuilder
     public Document Build()
     {
         if (string.IsNullOrWhiteSpace(_title))
+        {
             throw new ArgumentException("Title cannot be empty", nameof(_title));
+        }
         
         if (string.IsNullOrWhiteSpace(_content))
+        {
             throw new ArgumentException("Content cannot be empty", nameof(_content));
-        
+        }        
         return new Document
         {
             Id = Guid.NewGuid(),

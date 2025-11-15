@@ -22,7 +22,9 @@ public class InvertedIndexBuilder
     public InvertedIndex Build()
     {
         if (string.IsNullOrWhiteSpace(_term))
+        {
             throw new ArgumentException("Term cannot be empty", nameof(_term));
+        }
         
         return new InvertedIndex
         {

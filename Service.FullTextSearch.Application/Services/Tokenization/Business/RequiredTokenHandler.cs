@@ -26,7 +26,7 @@ public class RequiredTokenHandler : ITokenHandler
     {
         ArgumentNullException.ThrowIfNull(documents);
         ArgumentNullException.ThrowIfNull(query);
-        if (!query.RequiredTerms.Any())
+        if (query.RequiredTerms.Count == 0)
         {
             return documents;
         }

@@ -9,7 +9,9 @@ public class Tokenizer: ITokenizer
     public IReadOnlyCollection<string> Tokenize(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
-            return Enumerable.Empty<string>().ToList();
+        {
+            return [];
+        }
 
         var normalized = text.ToLowerInvariant();
         
